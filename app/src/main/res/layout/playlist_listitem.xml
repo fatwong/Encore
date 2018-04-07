@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/playlist_layout"
+    android:layout_width="match_parent"
+    android:layout_height="55dp"
+    android:background="?android:attr/selectableItemBackground">
+
+    <ImageView
+        android:layout_centerVertical="true"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="10dp"
+        android:scaleType="centerCrop"
+        android:id="@+id/playlist_cover"
+        android:transitionName="share_cover"
+        />
+
+    <ImageView
+        android:id="@+id/playlist_settings"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:layout_gravity="center_vertical"
+        android:layout_centerVertical="true"
+        android:background="?android:attr/selectableItemBackground"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:scaleType="centerInside"
+        android:src="@drawable/list_icn_more" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_toLeftOf="@id/playlist_settings"
+        android:layout_toRightOf="@id/playlist_cover"
+        android:layout_marginLeft="@dimen/line_length"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/playlist_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:lines="1"
+            android:textColor="@color/black_normal"
+            android:textSize="@dimen/text_body"
+            tools:text="STYX HELIX" />
+
+        <TextView
+            android:id="@+id/playlist_song_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/line_length_half"
+            android:ellipsize="end"
+            android:lines="1"
+            android:textColor="@color/black_alpha"
+            android:textSize="@dimen/text_caption"
+            tools:text="1首" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="56dp"
+        android:background="@android:drawable/divider_horizontal_bright" />
+
+</RelativeLayout>
