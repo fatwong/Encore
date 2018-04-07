@@ -66,7 +66,7 @@
         </com.bilibili.magicasakura.widgets.TintToolbar>
 
 
-        <com.fatwong.encore.ui.CustomViewPager
+        <com.fatwong.encore.ui.MainViewPager
             android:layout_below="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

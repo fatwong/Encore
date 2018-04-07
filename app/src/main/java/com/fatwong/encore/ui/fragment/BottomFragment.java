@@ -21,7 +21,7 @@ import com.fatwong.encore.base.BaseFragment;
 import com.fatwong.encore.bean.Song;
 import com.fatwong.encore.interfaces.OnSongChangeListener;
 import com.fatwong.encore.service.MusicPlayerManager;
-import com.fatwong.encore.ui.activity.PlayingActivity;
+import com.fatwong.encore.ui.activity.PlayerActivity;
 import com.fatwong.encore.utils.ImageUtils;
 
 import butterknife.BindView;
@@ -82,7 +82,7 @@ public class BottomFragment extends BaseFragment implements OnSongChangeListener
                         return;
                     }
                 }
-                Intent intent = new Intent(getActivity(), PlayingActivity.class);
+                Intent intent = new Intent(getActivity(), PlayerActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 getActivity().startActivity(intent);
             }

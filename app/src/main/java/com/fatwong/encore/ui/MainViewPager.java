@@ -11,12 +11,12 @@ import android.view.View;
  * Created by Isaac on 2018/2/27.
  */
 
-public class CustomViewPager extends ViewPager {
-    public CustomViewPager(Context context) {
+public class MainViewPager extends ViewPager {
+    public MainViewPager(Context context) {
         super(context);
     }
 
-    public CustomViewPager(Context context, AttributeSet attrs) {
+    public MainViewPager(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 

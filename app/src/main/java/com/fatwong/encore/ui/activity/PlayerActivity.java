@@ -16,7 +16,6 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.fatwong.encore.R;
-import com.fatwong.encore.base.BaseActivity;
 import com.fatwong.encore.bean.Song;
 import com.fatwong.encore.service.MusicPlayerManager;
 import com.fatwong.encore.interfaces.OnSongChangeListener;
@@ -32,7 +31,7 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
 
-public class PlayingActivity extends AppCompatActivity implements OnSongChangeListener{
+public class PlayerActivity extends AppCompatActivity implements OnSongChangeListener{
 
     @BindView(R.id.music_played_duration)
     TextView musicPlayedDuration;
@@ -155,7 +154,7 @@ public class PlayingActivity extends AppCompatActivity implements OnSongChangeLi
 
     public static void open(Context context) {
         Intent intent = new Intent();
-        intent.setClass(context, PlayingActivity.class);
+        intent.setClass(context, PlayerActivity.class);
         context.startActivity(intent);
     }
 

@@ -173,7 +173,7 @@ public class RecentlyPlayedActivity extends AppCompatActivity implements OnSongC
             Toast.makeText(RecentlyPlayedActivity.this, R.string.music_playing_none, Toast.LENGTH_SHORT).show();
             return false;
         }
-        PlayingActivity.open(this);
+        PlayerActivity.open(this);
         return true;
     }
 }

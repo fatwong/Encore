@@ -7,7 +7,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.widget.Toast;
 
-import com.fatwong.encore.ui.activity.PlayingActivity;
+import com.fatwong.encore.ui.activity.PlayerActivity;
 import com.fatwong.encore.service.MusicPlayerManager;
 
 import kr.co.namee.permissiongen.PermissionGen;
@@ -42,7 +42,7 @@ public class BaseFragment extends Fragment {
         if (MusicPlayerManager.get().getCurrentSong() == null) {
             return false;
         }
-        PlayingActivity.open(getActivity());
+        PlayerActivity.open(getActivity());
         return true;
     }
 

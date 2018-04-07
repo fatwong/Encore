@@ -21,7 +21,7 @@ import android.widget.Toast;
 import com.bilibili.magicasakura.widgets.TintToolbar;
 import com.fatwong.encore.R;
 import com.fatwong.encore.base.BaseActivity;
-import com.fatwong.encore.ui.CustomViewPager;
+import com.fatwong.encore.ui.MainViewPager;
 import com.fatwong.encore.ui.fragment.album.AlbumFragment;
 import com.fatwong.encore.ui.fragment.local.LocalFragment;
 
@@ -44,7 +44,7 @@ public class MainActivity extends BaseActivity {
     @BindView(R.id.toolbar)
     TintToolbar toolbar;
     @BindView(R.id.main_viewpager)
-    CustomViewPager mainViewPager;
+    MainViewPager mainViewPager;
     @BindView(R.id.drawer_main)
     DrawerLayout drawerMain;
     @BindView(R.id.nav_view)
