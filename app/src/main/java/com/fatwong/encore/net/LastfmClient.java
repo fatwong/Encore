@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.fatwong.encore.bean.AlbumInfo;
 import com.fatwong.encore.bean.AlbumQuery;
-import com.fatwong.encore.bean.ArtistInfo;
+import com.fatwong.encore.bean.Artist;
 import com.fatwong.encore.bean.ArtistQuery;
 import com.fatwong.encore.interfaces.APIService;
 import com.fatwong.encore.interfaces.AlbumInfoListener;
@@ -29,15 +29,15 @@ public class LastfmClient {
     }
 
     public void getArtistInfo(ArtistQuery artistQuery, final ArtistInfoListener listener) {
-        Call<ArtistInfo> call = apiService.getArtistInfo(artistQuery.mArtist);
-        call.enqueue(new Callback<ArtistInfo>() {
+        Call<Artist> call = apiService.getArtistInfo(artistQuery.mArtist);
+        call.enqueue(new Callback<Artist>() {
             @Override
-            public void onResponse(Call<ArtistInfo> call, Response<ArtistInfo> response) {
+            public void onResponse(Call<Artist> call, Response<Artist> response) {
                 listener.artistInfoSucess(response.body().mArtist);
             }
 
             @Override
-            public void onFailure(Call<ArtistInfo> call, Throwable t) {
+            public void onFailure(Call<Artist> call, Throwable t) {
                 listener.artistInfoFailed();
             }
         });

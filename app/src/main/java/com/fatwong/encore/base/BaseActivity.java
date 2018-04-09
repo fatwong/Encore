@@ -6,7 +6,9 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.fatwong.encore.R;
+import com.fatwong.encore.service.MusicPlayerManager;
 import com.fatwong.encore.service.MusicServiceHelper;
+import com.fatwong.encore.ui.activity.PlayerActivity;
 import com.fatwong.encore.ui.fragment.BottomFragment;
 
 public class BaseActivity extends AppCompatActivity  {
@@ -48,6 +50,14 @@ public class BaseActivity extends AppCompatActivity  {
 
     public void unbindService() {
 
+    }
+
+    public boolean startPlayingActivity() {
+        if (MusicPlayerManager.get().getCurrentSong() == null) {
+            return false;
+        }
+        PlayerActivity.open(this);
+        return true;
     }
 
 }

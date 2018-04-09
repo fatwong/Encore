@@ -13,10 +13,14 @@ import android.view.ViewGroup;
 
 import com.fatwong.encore.R;
 import com.fatwong.encore.adapter.PlaylistAdapter;
+import com.fatwong.encore.bean.Playlist;
 import com.fatwong.encore.event.UpdatePlaylistEvent;
+import com.fatwong.encore.interfaces.OnItemClickListener;
 import com.fatwong.encore.ui.activity.CreatePlaylistActivity;
 import com.fatwong.encore.ui.activity.LocalMusicActivity;
+import com.fatwong.encore.ui.activity.PlaylistDetailActivity;
 import com.fatwong.encore.ui.activity.RecentlyPlayedActivity;
+import com.fatwong.encore.ui.fragment.PlaylistPopupFragment;
 import com.fatwong.encore.utils.RxBus;
 
 import butterknife.BindView;
@@ -73,6 +77,18 @@ public class LocalFragment extends Fragment {
         playlistRecycler.setLayoutManager(new LinearLayoutManager(getActivity()));
         playlistAdapter = new PlaylistAdapter(getActivity());
         playlistRecycler.setAdapter(playlistAdapter);
+        playlistAdapter.setOnPlaylistClickListener(new OnItemClickListener<Playlist>() {
+            @Override
+            public void onItemClick(Playlist item, int position) {
+                PlaylistDetailActivity.open(getActivity(), item);
+            }
+
+            @Override
+            public void onItemSettingClick(View view, Playlist item, int position) {
+                PlaylistPopupFragment playlistPopupFragment = PlaylistPopupFragment.newInstance(position, item, playlistAdapter);
+                playlistPopupFragment.show(getFragmentManager(), "");
+            }
+        });
         return view;
     }
 

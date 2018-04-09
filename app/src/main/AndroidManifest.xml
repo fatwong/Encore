@@ -51,7 +51,8 @@
         <activity
             android:name=".ui.activity.RecentlyPlayedActivity"
             android:theme="@style/AppTheme" />
-        <activity android:name=".ui.activity.CreatePlaylistActivity"></activity>
+        <activity android:name=".ui.activity.CreatePlaylistActivity" />
+
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="com.fatwong.encore.fileprovider"
@@ -61,6 +62,11 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
+
+        <activity android:name=".ui.activity.PlaylistDetailActivity" />
+        <activity android:name=".ui.activity.MusicDetailActivity" />
+        <activity android:name=".ui.activity.LocalArtistDetailActivity" />
+        <activity android:name=".ui.activity.LocalAlbumDetailActivity"></activity>
     </application>
 
 </manifest>

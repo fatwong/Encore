@@ -6,7 +6,7 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
-public class ArtistInfo implements Parcelable {
+public class Artist implements Parcelable {
 
     public static final String KEY_ARTIST_NAME = "artist_name";
     public static final String KEY_NUMBER_OF_TRACKS = "number_of_tracks";
@@ -22,12 +22,12 @@ public class ArtistInfo implements Parcelable {
 
     @SerializedName(ARTIST)
     public LastfmArtist mArtist;
-    public static final Creator<ArtistInfo> CREATOR = new Creator<ArtistInfo>() {
+    public static final Creator<Artist> CREATOR = new Creator<Artist>() {
 
         @Override
-        public ArtistInfo createFromParcel(Parcel source) {
+        public Artist createFromParcel(Parcel source) {
             Bundle bundle = source.readBundle();
-            ArtistInfo info = new ArtistInfo();
+            Artist info = new Artist();
             info.artist_name = bundle.getString(KEY_ARTIST_NAME);
             info.number_of_tracks = bundle.getInt(KEY_NUMBER_OF_TRACKS);
             info.artist_id = bundle.getLong(KEY_ARTIST_ID);
@@ -36,8 +36,8 @@ public class ArtistInfo implements Parcelable {
         }
 
         @Override
-        public ArtistInfo[] newArray(int size) {
-            return new ArtistInfo[size];
+        public Artist[] newArray(int size) {
+            return new Artist[size];
         }
     };
 

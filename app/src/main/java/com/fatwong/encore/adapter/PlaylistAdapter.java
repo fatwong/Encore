@@ -1,9 +1,9 @@
 package com.fatwong.encore.adapter;
 
 import android.content.Context;
+import android.os.Build;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,7 +43,7 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.Playli
                 playlists.remove(playlist);
             }
         }
-        playlists.add(createDefaultPlaylist());
+//        playlists.add(createDefaultPlaylist());
         notifyDataSetChanged();
     }
 
@@ -62,38 +62,41 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.Playli
 
     @Override
     public PlaylistViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.recycler_playlist_listitem, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.playlist_listitem, parent, false);
         return new PlaylistViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(PlaylistViewHolder holder, int position) {
+    public void onBindViewHolder(final PlaylistViewHolder holder, int position) {
         final Playlist playlist = playlists.get(position);
-        if (playlist.getId() == -1) {
-            holder.collectionSetting.setVisibility(View.GONE);
-            holder.collectionCount.setVisibility(View.GONE);
-            holder.collectionTitle.setText(R.string.collection_create);
-            holder.collectionCover.setImageResource(R.drawable.ah1);
-            holder.collectionItem.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (onPlaylistClickListener != null) {
-                        onPlaylistClickListener.onItemClick(null, -1);
-                    }
-                    CreatePlaylistActivity.open(context);
-                }
-            });
-        } else {
-            holder.collectionSetting.setVisibility(View.VISIBLE);
-            holder.collectionCount.setVisibility(View.VISIBLE);
-            holder.collectionTitle.setText(playlist.getTitle());
+            holder.playlistSetting.setVisibility(View.VISIBLE);
+            holder.playlistSongCount.setVisibility(View.VISIBLE);
+            holder.playlistTitle.setText(playlist.getTitle());
             String count = String.format(context.getString(R.string.song), playlist.getCount());
-            holder.collectionCount.setText(count);
+            holder.playlistSongCount.setText(count);
             Glide.with(context)
                     .load(playlist.getCoverUrl())
                     .apply(new RequestOptions().placeholder(R.drawable.cover))
-                    .into(holder.collectionCover);
-        }
+                    .into(holder.playlistCover);
+            holder.playlistItem.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (onPlaylistClickListener != null) {
+                        onPlaylistClickListener.onItemClick(playlist, holder.getAdapterPosition());
+                    }
+                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+                        return;
+                    }
+                }
+            });
+            holder.playlistSetting.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (onPlaylistClickListener != null) {
+                        onPlaylistClickListener.onItemSettingClick(holder.playlistSetting, playlist, holder.getAdapterPosition());
+                    }
+                }
+            });
     }
 
     @Override
@@ -110,31 +113,31 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.Playli
     }
 
 
-    @OnClick({R.id.collection_cover, R.id.collection_setting, R.id.collection_title, R.id.collection_count, R.id.collection_item})
+    @OnClick({R.id.playlist_cover, R.id.playlist_setting, R.id.playlist_title, R.id.playlist_song_count, R.id.playlist_item})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.collection_cover:
+            case R.id.playlist_cover:
                 break;
-            case R.id.collection_setting:
+            case R.id.playlist_setting:
                 break;
-            case R.id.collection_title:
+            case R.id.playlist_title:
                 break;
-            case R.id.collection_count:
+            case R.id.playlist_song_count:
                 break;
         }
     }
 
     public class PlaylistViewHolder extends RecyclerView.ViewHolder{
-        @BindView(R.id.collection_cover)
-        ImageView collectionCover;
-        @BindView(R.id.collection_setting)
-        AppCompatImageView collectionSetting;
-        @BindView(R.id.collection_title)
-        TextView collectionTitle;
-        @BindView(R.id.collection_count)
-        TextView collectionCount;
-        @BindView(R.id.collection_item)
-        RelativeLayout collectionItem;
+        @BindView(R.id.playlist_cover)
+        ImageView playlistCover;
+        @BindView(R.id.playlist_setting)
+        AppCompatImageView playlistSetting;
+        @BindView(R.id.playlist_title)
+        TextView playlistTitle;
+        @BindView(R.id.playlist_song_count)
+        TextView playlistSongCount;
+        @BindView(R.id.playlist_item)
+        RelativeLayout playlistItem;
 
         public PlaylistViewHolder(View itemView) {
             super(itemView);

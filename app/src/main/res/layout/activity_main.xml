@@ -54,13 +54,13 @@
                     android:clickable="true" />
 
                 <ImageView
-                    android:id="@+id/bar_search"
+                    android:id="@+id/bar_player"
                     android:layout_width="23dp"
                     android:layout_height="23dp"
                     android:scaleType="center"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:background="@drawable/actionbar_search" />
+                    android:background="@drawable/actionbar_player" />
             </RelativeLayout>
 
         </com.bilibili.magicasakura.widgets.TintToolbar>

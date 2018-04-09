@@ -24,17 +24,13 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-/**
- * Created by Isaac on 2018/3/7.
- */
-
-public class LocalMusicRecyclerAdapter extends RecyclerView.Adapter<LocalMusicRecyclerAdapter.LocalMusicViewHolder> {
+public class LocalArtistDetailAdapter extends RecyclerView.Adapter<LocalArtistDetailAdapter.LocalArtistViewHolder> {
 
     private Context mContext;
     private List<Song> songs;
     private OnItemClickListener<Song> onSongClickListener;
 
-    public LocalMusicRecyclerAdapter(Context context) {
+    public LocalArtistDetailAdapter(Context context) {
         this.mContext = context;
         songs = new ArrayList<>();
     }
@@ -46,13 +42,13 @@ public class LocalMusicRecyclerAdapter extends RecyclerView.Adapter<LocalMusicRe
 
 
     @Override
-    public LocalMusicViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public LocalArtistDetailAdapter.LocalArtistViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.local_music_listitem, parent, false);
-        return new LocalMusicViewHolder(view);
+        return new LocalArtistDetailAdapter.LocalArtistViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(final LocalMusicViewHolder holder, final int position) {
+    public void onBindViewHolder(final LocalArtistDetailAdapter.LocalArtistViewHolder holder, final int position) {
         final Song song = songs.get(position);
         holder.localSongTitle.setText(Html.fromHtml(song.getTitle()));
         if (TextUtils.isEmpty(song.getArtistName())) {
@@ -66,15 +62,15 @@ public class LocalMusicRecyclerAdapter extends RecyclerView.Adapter<LocalMusicRe
                 .into(holder.localSongCover);
     }
 
-    public OnItemClickListener getOnSongClickListener() {
+    public OnItemClickListener<Song> getOnSongClickListener() {
         return onSongClickListener;
     }
 
-    public void setOnSongClickListener(OnItemClickListener onSongClickListener) {
+    public void setOnSongClickListener(OnItemClickListener<Song> onSongClickListener) {
         this.onSongClickListener = onSongClickListener;
     }
 
-    public class LocalMusicViewHolder extends RecyclerView.ViewHolder {
+    public class LocalArtistViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.local_song_cover)
         ImageView localSongCover;
@@ -87,7 +83,7 @@ public class LocalMusicRecyclerAdapter extends RecyclerView.Adapter<LocalMusicRe
         @BindView(R.id.local_recycler_item)
         RelativeLayout localRecyclerItem;
 
-        public LocalMusicViewHolder(View itemView) {
+        public LocalArtistViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
             localSettings.setOnClickListener(new View.OnClickListener() {

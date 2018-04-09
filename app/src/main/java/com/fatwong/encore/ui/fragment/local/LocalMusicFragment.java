@@ -19,6 +19,7 @@ import com.fatwong.encore.interfaces.OnItemClickListener;
 import com.fatwong.encore.presenter.LocalLibraryPresenter;
 import com.fatwong.encore.service.MusicPlayerManager;
 import com.fatwong.encore.base.BaseFragment;
+import com.fatwong.encore.ui.fragment.SongPopupFragment;
 
 import java.util.List;
 
@@ -37,6 +38,7 @@ public class LocalMusicFragment extends BaseFragment implements LocalIView.Local
     private LocalMusicRecyclerAdapter localMusicRecyclerAdapter;
     private LocalLibraryPresenter localLibraryPresenter;
     private PlayQueue playQueue;
+    private int currentSongPosition = -1;
 
 
     public static LocalMusicFragment newInstance() {
@@ -65,16 +67,20 @@ public class LocalMusicFragment extends BaseFragment implements LocalIView.Local
         localMusicRecyclerAdapter = new LocalMusicRecyclerAdapter(getActivity());
         localRecycler.setLayoutManager(new LinearLayoutManager(getActivity()));
         localRecycler.setAdapter(localMusicRecyclerAdapter);
-        localMusicRecyclerAdapter.setItemClickListener(new OnItemClickListener() {
+        localMusicRecyclerAdapter.setOnSongClickListener(new OnItemClickListener<Song>() {
             @Override
-            public void onItemClick(Object item, int position) {
-                MusicPlayerManager.get().playQueue(playQueue, position);
+            public void onItemClick(Song item, int position) {
+                if (currentSongPosition != position) {
+                    MusicPlayerManager.get().playQueue(playQueue, position);
+                    currentSongPosition = position;
+                }
                 startPlayingActivity();
             }
 
             @Override
-            public void onItemSettingClick(View view, Object item, int position) {
-
+            public void onItemSettingClick(View view, Song item, int position) {
+                SongPopupFragment songPopupFragment = SongPopupFragment.newInstance(item, getContext());
+                songPopupFragment.show(getFragmentManager(), "");
             }
         });
         localLibraryPresenter.requestMusic();

@@ -80,7 +80,7 @@ public class PlaylistManager {
         return null;
     }
 
-    private void deletePlaylist(Playlist playlist) {
+    public void deletePlaylist(Playlist playlist) {
         Observable.just(playlist)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
@@ -203,7 +203,7 @@ public class PlaylistManager {
         return index;
     }
 
-    public void insertPlaylistAsync(final Playlist playlist, final Song song, Consumer<Boolean> consumer) {
+    public void insertPlaylistRelationAsync(final Playlist playlist, final Song song, Consumer<Boolean> consumer) {
         Observable.create(new ObservableOnSubscribe<Boolean>() {
             @Override
             public void subscribe(ObservableEmitter<Boolean> emitter) throws Exception {

@@ -3,6 +3,7 @@ package com.fatwong.encore.ui.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.media.session.PlaybackStateCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -17,8 +18,10 @@ import android.widget.TextView;
 
 import com.fatwong.encore.R;
 import com.fatwong.encore.bean.Song;
-import com.fatwong.encore.service.MusicPlayerManager;
 import com.fatwong.encore.interfaces.OnSongChangeListener;
+import com.fatwong.encore.service.MusicPlayerManager;
+import com.fatwong.encore.ui.fragment.PlayQueueFragment;
+import com.fatwong.encore.ui.fragment.SongPopupFragment;
 import com.fatwong.encore.utils.ImageUtils;
 
 import java.text.DecimalFormat;
@@ -31,7 +34,7 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
 
-public class PlayerActivity extends AppCompatActivity implements OnSongChangeListener{
+public class PlayerActivity extends AppCompatActivity implements OnSongChangeListener {
 
     @BindView(R.id.music_played_duration)
     TextView musicPlayedDuration;
@@ -49,13 +52,15 @@ public class PlayerActivity extends AppCompatActivity implements OnSongChangeLis
     Toolbar toolbar;
     @BindView(R.id.cover_image)
     ImageView coverImage;
+    @BindView(R.id.playing_playlist)
+    ImageView playingPlaylist;
 
     private Song song;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_playing);
+        setContentView(R.layout.activity_player);
         ButterKnife.bind(this);
 
         MusicPlayerManager.get().registerOnSongChangedListener(this);
@@ -63,7 +68,6 @@ public class PlayerActivity extends AppCompatActivity implements OnSongChangeLis
         updateProgress();
         updateData();
     }
-
 
 
     @Override
@@ -158,7 +162,7 @@ public class PlayerActivity extends AppCompatActivity implements OnSongChangeLis
         context.startActivity(intent);
     }
 
-    @OnClick({R.id.playing_previous, R.id.playing_play, R.id.playing_next})
+    @OnClick({R.id.playing_previous, R.id.playing_play, R.id.playing_next, R.id.playing_playlist, R.id.playing_more})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.playing_previous:
@@ -177,6 +181,20 @@ public class PlayerActivity extends AppCompatActivity implements OnSongChangeLis
             case R.id.playing_next:
                 MusicPlayerManager.get().playNextSong();
                 break;
+            case R.id.playing_playlist:
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        PlayQueueFragment playQueueFragment = new PlayQueueFragment();
+                        playQueueFragment.show(getSupportFragmentManager(), "PlayQueueFragment");
+                    }
+                }, 60);
+                break;
+            case R.id.playing_more:
+                SongPopupFragment songPopupFragment = SongPopupFragment.newInstance(song, this);
+                songPopupFragment.show(getSupportFragmentManager(), "");
         }
     }
+
 }

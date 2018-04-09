@@ -14,7 +14,9 @@ import android.view.ViewGroup;
 
 import com.fatwong.encore.R;
 import com.fatwong.encore.adapter.LocalArtistAdapter;
-import com.fatwong.encore.bean.ArtistInfo;
+import com.fatwong.encore.bean.Artist;
+import com.fatwong.encore.interfaces.OnItemClickListener;
+import com.fatwong.encore.ui.activity.LocalArtistDetailActivity;
 import com.fatwong.encore.utils.MusicUtils;
 
 import java.util.List;
@@ -60,6 +62,17 @@ public class LocalArtistFragment extends Fragment {
         ((SimpleItemAnimator)localArtistRecycler.getItemAnimator()).setSupportsChangeAnimations(false);
         setItemDecoration();
         reloadAdapter();
+        localArtistAdapter.setOnArtistClickListener(new OnItemClickListener<Artist>() {
+            @Override
+            public void onItemClick(Artist item, int position) {
+                LocalArtistDetailActivity.open(getContext(), item);
+            }
+
+            @Override
+            public void onItemSettingClick(View view, Artist item, int position) {
+
+            }
+        });
         return view;
     }
 
@@ -67,9 +80,9 @@ public class LocalArtistFragment extends Fragment {
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(Void... voids) {
-                List<ArtistInfo> artistInfoList = MusicUtils.queryArtist(getActivity());
-                if (artistInfoList != null) {
-                    localArtistAdapter.updateData(artistInfoList);
+                List<Artist> artistList = MusicUtils.queryArtist(getActivity());
+                if (artistList != null) {
+                    localArtistAdapter.updateData(artistList);
                 }
                 return null;
             }

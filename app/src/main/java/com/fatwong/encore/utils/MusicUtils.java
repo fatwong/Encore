@@ -12,8 +12,7 @@ import android.provider.MediaStore.Files.FileColumns;
 
 import com.fatwong.encore.R;
 import com.fatwong.encore.bean.AlbumInfo;
-import com.fatwong.encore.bean.ArtistInfo;
-import com.fatwong.encore.bean.FolderInfo;
+import com.fatwong.encore.bean.Artist;
 import com.fatwong.encore.bean.MusicInfo;
 import com.fatwong.encore.interfaces.IConstants;
 import com.github.promeg.pinyinhelper.Pinyin;
@@ -44,40 +43,13 @@ public class MusicUtils implements IConstants {
             MediaStore.Audio.Artists._ID};
     private static String[] proj_folder = new String[]{FileColumns.DATA};
 
-
-    /**
-     * 获取包含音频文件的文件夹信息
-     *
-     * @param context
-     * @return
-     */
-    public static List<FolderInfo> queryFolder(Context context) {
-
-        Uri uri = MediaStore.Files.getContentUri("external");
-        ContentResolver cr = context.getContentResolver();
-        StringBuilder mSelection = new StringBuilder(FileColumns.MEDIA_TYPE
-                + " = " + FileColumns.MEDIA_TYPE_AUDIO + " and " + "("
-                + FileColumns.DATA + " like'%.mp3' or " + Media.DATA
-                + " like'%.wma')");
-        // 查询语句：检索出.mp3为后缀名，时长大于1分钟，文件大小大于1MB的媒体文件
-        mSelection.append(" and " + Media.SIZE + " > " + FILTER_SIZE);
-        mSelection.append(" and " + Media.DURATION + " > " + FILTER_DURATION);
-        mSelection.append(") group by ( " + FileColumns.PARENT);
-
-        List<FolderInfo> list = getFolderList(cr.query(uri, proj_folder, mSelection.toString(), null,
-                null));
-
-        return list;
-
-    }
-
     /**
      * 获取歌手信息
      *
      * @param context
      * @return
      */
-    public static List<ArtistInfo> queryArtist(Context context) {
+    public static List<Artist> queryArtist(Context context) {
 
         Uri uri = MediaStore.Audio.Artists.EXTERNAL_CONTENT_URI;
         ContentResolver cr = context.getContentResolver();
@@ -89,7 +61,7 @@ public class MusicUtils implements IConstants {
 
         where.append(")");
 
-        List<ArtistInfo> list = getArtistList(cr.query(uri, proj_artist,
+        List<Artist> list = getArtistList(cr.query(uri, proj_artist,
                 where.toString(), null, PreferencesUtility.getInstance(context).getArtistSortOrder()));
 
         return list;
@@ -295,32 +267,16 @@ public class MusicUtils implements IConstants {
         return list;
     }
 
-    public static List<ArtistInfo> getArtistList(Cursor cursor) {
-        List<ArtistInfo> list = new ArrayList<>();
+    public static List<Artist> getArtistList(Cursor cursor) {
+        List<Artist> list = new ArrayList<>();
         while (cursor.moveToNext()) {
-            ArtistInfo info = new ArtistInfo();
+            Artist info = new Artist();
             info.artist_name = cursor.getString(cursor
                     .getColumnIndex(MediaStore.Audio.Artists.ARTIST));
             info.number_of_tracks = cursor.getInt(cursor
                     .getColumnIndex(MediaStore.Audio.Artists.NUMBER_OF_TRACKS));
             info.artist_id = cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Artists._ID));
             info.artist_sort = Pinyin.toPinyin(info.artist_name.charAt(0)).substring(0, 1).toUpperCase();
-            list.add(info);
-        }
-        cursor.close();
-        return list;
-    }
-
-    public static List<FolderInfo> getFolderList(Cursor cursor) {
-        List<FolderInfo> list = new ArrayList<>();
-        while (cursor.moveToNext()) {
-            FolderInfo info = new FolderInfo();
-            String filePath = cursor.getString(cursor
-                    .getColumnIndex(FileColumns.DATA));
-            info.folder_path = filePath.substring(0, filePath.lastIndexOf(File.separator));
-            info.folder_name = info.folder_path.substring(info.folder_path
-                    .lastIndexOf(File.separator) + 1);
-            info.folder_sort = Pinyin.toPinyin(info.folder_name.charAt(0)).substring(0, 1).toUpperCase();
             list.add(info);
         }
         cursor.close();
@@ -384,19 +340,19 @@ public class MusicUtils implements IConstants {
     }
 
 
-    public static ArtistInfo getArtistinfo(Context context, long id) {
+    public static Artist getArtistinfo(Context context, long id) {
         ContentResolver cr = context.getContentResolver();
         Cursor cursor = cr.query(MediaStore.Audio.Artists.EXTERNAL_CONTENT_URI, proj_artist, "_id =" + String.valueOf(id), null, null);
         if (cursor == null) {
             return null;
         }
-        ArtistInfo artistInfo = new ArtistInfo();
+        Artist artist = new Artist();
         while (cursor.moveToNext()) {
-            artistInfo.artist_name = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Artists.ARTIST));
-            artistInfo.number_of_tracks = cursor.getInt(cursor.getColumnIndex(MediaStore.Audio.Artists.NUMBER_OF_TRACKS));
+            artist.artist_name = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Artists.ARTIST));
+            artist.number_of_tracks = cursor.getInt(cursor.getColumnIndex(MediaStore.Audio.Artists.NUMBER_OF_TRACKS));
         }
         cursor.close();
-        return artistInfo;
+        return artist;
     }
 
 

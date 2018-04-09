@@ -3,19 +3,20 @@ package com.fatwong.encore.adapter;
 import android.content.Context;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bilibili.magicasakura.widgets.TintImageView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.fatwong.encore.R;
-import com.fatwong.encore.bean.ArtistInfo;
+import com.fatwong.encore.bean.Artist;
 import com.fatwong.encore.bean.ArtistQuery;
 import com.fatwong.encore.bean.LastfmArtist;
 import com.fatwong.encore.interfaces.ArtistInfoListener;
+import com.fatwong.encore.interfaces.OnItemClickListener;
 import com.fatwong.encore.net.LastfmClient;
 import com.fatwong.encore.service.MusicPlayerManager;
 
@@ -26,16 +27,25 @@ import butterknife.ButterKnife;
 
 public class LocalArtistAdapter extends RecyclerView.Adapter<LocalArtistAdapter.LocalArtistViewHolder> {
 
-    private List<ArtistInfo> artistInfoList;
+    private List<Artist> artistList;
     private Context mContext;
+    private OnItemClickListener onArtistClickListener;
 
-    public LocalArtistAdapter(List<ArtistInfo> list, Context context) {
-        this.artistInfoList = list;
+    public OnItemClickListener<Artist> getOnArtistClickListener() {
+        return onArtistClickListener;
+    }
+
+    public void setOnArtistClickListener(OnItemClickListener<Artist> onArtistClickListener) {
+        this.onArtistClickListener = onArtistClickListener;
+    }
+
+    public LocalArtistAdapter(List<Artist> list, Context context) {
+        this.artistList = list;
         this.mContext = context;
     }
 
-    public void updateData(List<ArtistInfo> list) {
-        this.artistInfoList = list;
+    public void updateData(List<Artist> list) {
+        this.artistList = list;
     }
 
     @Override
@@ -46,7 +56,7 @@ public class LocalArtistAdapter extends RecyclerView.Adapter<LocalArtistAdapter.
 
     @Override
     public void onBindViewHolder(final LocalArtistViewHolder holder, int position) {
-        ArtistInfo model = artistInfoList.get(position);
+        Artist model = artistList.get(position);
         holder.artistName.setText(model.artist_name);
         holder.artistSongCount.setText(model.number_of_tracks + "首");
         if (MusicPlayerManager.get().isPlaying()) {
@@ -74,7 +84,7 @@ public class LocalArtistAdapter extends RecyclerView.Adapter<LocalArtistAdapter.
 
     @Override
     public int getItemCount() {
-        return artistInfoList == null ? 0: artistInfoList.size();
+        return artistList == null ? 0 : artistList.size();
     }
 
     public class LocalArtistViewHolder extends RecyclerView.ViewHolder {
@@ -86,10 +96,21 @@ public class LocalArtistAdapter extends RecyclerView.Adapter<LocalArtistAdapter.
         TextView artistName;
         @BindView(R.id.artist_song_count)
         TextView artistSongCount;
+        @BindView(R.id.artist_item)
+        RelativeLayout artistItem;
 
         public LocalArtistViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+            artistItem.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Artist artist = artistList.get(getAdapterPosition());
+                    if (onArtistClickListener != null) {
+                        onArtistClickListener.onItemClick(artist, getAdapterPosition());
+                    }
+                }
+            });
         }
     }
 }

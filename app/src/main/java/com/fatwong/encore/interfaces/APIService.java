@@ -1,7 +1,7 @@
 package com.fatwong.encore.interfaces;
 
 import com.fatwong.encore.bean.AlbumInfo;
-import com.fatwong.encore.bean.ArtistInfo;
+import com.fatwong.encore.bean.Artist;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -19,6 +19,6 @@ public interface APIService {
 
     @Headers("Cache-Control: public")
     @GET(BASE_PARAMETERS_ARTIST) //&artist=artist
-    Call<ArtistInfo> getArtistInfo(@Query("artist") String artist);
+    Call<Artist> getArtistInfo(@Query("artist") String artist);
 
 }

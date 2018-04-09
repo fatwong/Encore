@@ -16,6 +16,8 @@ import android.view.ViewGroup;
 import com.fatwong.encore.R;
 import com.fatwong.encore.adapter.LocalAlbumAdapter;
 import com.fatwong.encore.bean.AlbumInfo;
+import com.fatwong.encore.interfaces.OnItemClickListener;
+import com.fatwong.encore.ui.activity.LocalAlbumDetailActivity;
 import com.fatwong.encore.utils.MusicUtils;
 
 import java.util.List;
@@ -61,6 +63,17 @@ public class LocalAlbumFragment extends Fragment {
         ((SimpleItemAnimator)localAlbumRecycler.getItemAnimator()).setSupportsChangeAnimations(false);
         setItemDecoration();
         reloadAdapter();
+        localAlbumAdapter.setOnAlbumClickListener(new OnItemClickListener<AlbumInfo>() {
+            @Override
+            public void onItemClick(AlbumInfo item, int position) {
+                LocalAlbumDetailActivity.open(getContext(), item);
+            }
+
+            @Override
+            public void onItemSettingClick(View view, AlbumInfo item, int position) {
+
+            }
+        });
         return view;
     }
 

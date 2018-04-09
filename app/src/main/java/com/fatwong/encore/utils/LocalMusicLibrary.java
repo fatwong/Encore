@@ -1,5 +1,6 @@
 package com.fatwong.encore.utils;
 
+import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
 import android.database.Cursor;
@@ -7,7 +8,9 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import android.util.Log;
 
+import com.fatwong.encore.bean.Artist;
 import com.fatwong.encore.bean.Song;
+import com.github.promeg.pinyinhelper.Pinyin;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +33,50 @@ public class LocalMusicLibrary {
         Cursor cursor = context.getContentResolver().query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
                 new String[]{"_id","title","artist","album","duration","track","artist_id","album_id","_data"},
                 selectionStatement, null, MediaStore.Audio.Media.DEFAULT_SORT_ORDER);
+        if((cursor != null) && cursor.moveToFirst())
+            do {
+                Song song = getSongFromCursor(cursor);
+                if(song.isStatus()){
+                    songs.add(song);
+                }
+
+            }
+            while (cursor.moveToNext());
+        if(cursor != null){
+            cursor.close();
+        }
+        return songs;
+    }
+
+    public static List<Song> getArtistAllSongs(Context context, int artistId) {
+        ArrayList<Song> songs = new ArrayList<>();
+        StringBuilder selectionStatement = new StringBuilder("is_music=1 AND title !=''");
+        selectionStatement.append(" and " + MediaStore.Audio.Media.ARTIST_ID + " = " + artistId);
+        Cursor cursor = context.getContentResolver().query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
+                new String[]{"_id","title","artist","album","duration","track","artist_id","album_id","_data"},
+                selectionStatement.toString(), null, MediaStore.Audio.Media.DEFAULT_SORT_ORDER);
+        if((cursor != null) && cursor.moveToFirst())
+            do {
+                Song song = getSongFromCursor(cursor);
+                if(song.isStatus()){
+                    songs.add(song);
+                }
+
+            }
+            while (cursor.moveToNext());
+        if(cursor != null){
+            cursor.close();
+        }
+        return songs;
+    }
+
+    public static List<Song> getAlbumAllSongs(Context context, int albumId) {
+        ArrayList<Song> songs = new ArrayList<>();
+        StringBuilder selectionStatement = new StringBuilder("is_music=1 AND title !=''");
+        selectionStatement.append(" and " + MediaStore.Audio.Media.ALBUM_ID + " = " + albumId);
+        Cursor cursor = context.getContentResolver().query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
+                new String[]{"_id","title","artist","album","duration","track","artist_id","album_id","_data"},
+                selectionStatement.toString(), null, MediaStore.Audio.Media.DEFAULT_SORT_ORDER);
         if((cursor != null) && cursor.moveToFirst())
             do {
                 Song song = getSongFromCursor(cursor);

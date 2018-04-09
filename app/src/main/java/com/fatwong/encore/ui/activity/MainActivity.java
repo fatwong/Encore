@@ -21,6 +21,8 @@ import android.widget.Toast;
 import com.bilibili.magicasakura.widgets.TintToolbar;
 import com.fatwong.encore.R;
 import com.fatwong.encore.base.BaseActivity;
+import com.fatwong.encore.bean.Song;
+import com.fatwong.encore.service.MusicPlayerManager;
 import com.fatwong.encore.ui.MainViewPager;
 import com.fatwong.encore.ui.fragment.album.AlbumFragment;
 import com.fatwong.encore.ui.fragment.local.LocalFragment;
@@ -39,8 +41,8 @@ public class MainActivity extends BaseActivity {
     ImageView barMusic;
     @BindView(R.id.bar_friends)
     ImageView barFriends;
-    @BindView(R.id.bar_search)
-    ImageView barSearch;
+    @BindView(R.id.bar_player)
+    ImageView barPlayer;
     @BindView(R.id.toolbar)
     TintToolbar toolbar;
     @BindView(R.id.main_viewpager)
@@ -167,7 +169,7 @@ public class MainActivity extends BaseActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    @OnClick({R.id.bar_net, R.id.bar_music, R.id.bar_friends, R.id.bar_search})
+    @OnClick({R.id.bar_net, R.id.bar_music, R.id.bar_friends, R.id.bar_player})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bar_net:
@@ -179,7 +181,15 @@ public class MainActivity extends BaseActivity {
             case R.id.bar_friends:
                 mainViewPager.setCurrentItem(2);
                 break;
-            case R.id.bar_search:
+            case R.id.bar_player:
+                Song song = MusicPlayerManager.get().getCurrentSong();
+                if (song == null) {
+                    if (song == null) {
+                        Toast.makeText(this, "当前无歌曲播放", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                }
+                startPlayingActivity();
                 break;
         }
     }
