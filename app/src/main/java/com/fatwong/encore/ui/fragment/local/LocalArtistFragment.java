@@ -17,7 +17,7 @@ import com.fatwong.encore.adapter.LocalArtistAdapter;
 import com.fatwong.encore.bean.Artist;
 import com.fatwong.encore.interfaces.OnItemClickListener;
 import com.fatwong.encore.ui.activity.LocalArtistDetailActivity;
-import com.fatwong.encore.utils.MusicUtils;
+import com.fatwong.encore.utils.LocalMusicLibrary;
 
 import java.util.List;
 
@@ -56,7 +56,7 @@ public class LocalArtistFragment extends Fragment {
         unbinder = ButterKnife.bind(this, view);
         layoutManager = new LinearLayoutManager(getActivity());
         localArtistRecycler.setLayoutManager(layoutManager);
-        localArtistAdapter = new LocalArtistAdapter(null,getActivity());
+        localArtistAdapter = new LocalArtistAdapter(null, getActivity());
         localArtistRecycler.setAdapter(localArtistAdapter);
         localArtistRecycler.setHasFixedSize(true);
         ((SimpleItemAnimator)localArtistRecycler.getItemAnimator()).setSupportsChangeAnimations(false);
@@ -80,7 +80,7 @@ public class LocalArtistFragment extends Fragment {
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(Void... voids) {
-                List<Artist> artistList = MusicUtils.queryArtist(getActivity());
+                List<Artist> artistList = LocalMusicLibrary.getAllArtists(getActivity());
                 if (artistList != null) {
                     localArtistAdapter.updateData(artistList);
                 }

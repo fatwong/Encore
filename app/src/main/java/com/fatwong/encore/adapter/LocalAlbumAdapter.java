@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.fatwong.encore.R;
-import com.fatwong.encore.bean.AlbumInfo;
+import com.fatwong.encore.bean.Album;
 import com.fatwong.encore.bean.AlbumQuery;
 import com.fatwong.encore.bean.LastfmAlbum;
 import com.fatwong.encore.interfaces.AlbumInfoListener;
@@ -25,25 +25,25 @@ import butterknife.ButterKnife;
 
 public class LocalAlbumAdapter extends RecyclerView.Adapter<LocalAlbumAdapter.LocalAlbumViewHolder> {
 
-    private List<AlbumInfo> albumInfoList;
+    private List<Album> albumList;
     private Context mContext;
-    private OnItemClickListener<AlbumInfo> onAlbumClickListener;
+    private OnItemClickListener<Album> onAlbumClickListener;
 
-    public OnItemClickListener<AlbumInfo> getOnAlbumClickListener() {
+    public OnItemClickListener<Album> getOnAlbumClickListener() {
         return onAlbumClickListener;
     }
 
-    public void setOnAlbumClickListener(OnItemClickListener<AlbumInfo> onAlbumClickListener) {
+    public void setOnAlbumClickListener(OnItemClickListener<Album> onAlbumClickListener) {
         this.onAlbumClickListener = onAlbumClickListener;
     }
 
-    public LocalAlbumAdapter(List<AlbumInfo> list, Context context) {
-        albumInfoList = list;
+    public LocalAlbumAdapter(List<Album> list, Context context) {
+        albumList = list;
         mContext = context;
     }
 
-    public void updateData(List<AlbumInfo> list) {
-        this.albumInfoList = list;
+    public void updateData(List<Album> list) {
+        this.albumList = list;
     }
 
     @Override
@@ -54,7 +54,7 @@ public class LocalAlbumAdapter extends RecyclerView.Adapter<LocalAlbumAdapter.Lo
 
     @Override
     public void onBindViewHolder(final LocalAlbumViewHolder holder, int position) {
-        AlbumInfo model = albumInfoList.get(position);
+        Album model = albumList.get(position);
         holder.albumName.setText(model.album_name);
         holder.albumSongCount.setText(model.album_artist + "，" + model.number_of_songs + "首");
         LastfmClient.getInstance(mContext).getAlbumInfo(new AlbumQuery(model.album_name, model.album_artist), new AlbumInfoListener() {
@@ -74,7 +74,7 @@ public class LocalAlbumAdapter extends RecyclerView.Adapter<LocalAlbumAdapter.Lo
 
     @Override
     public int getItemCount() {
-        return albumInfoList == null ? 0 : albumInfoList.size();
+        return albumList == null ? 0 : albumList.size();
     }
 
     public class LocalAlbumViewHolder extends RecyclerView.ViewHolder {
@@ -93,9 +93,9 @@ public class LocalAlbumAdapter extends RecyclerView.Adapter<LocalAlbumAdapter.Lo
             albumItem.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    AlbumInfo albumInfo = albumInfoList.get(getAdapterPosition());
+                    Album album = albumList.get(getAdapterPosition());
                     if (onAlbumClickListener != null) {
-                        onAlbumClickListener.onItemClick(albumInfo, getAdapterPosition());
+                        onAlbumClickListener.onItemClick(album, getAdapterPosition());
                     }
                 }
             });

@@ -10,7 +10,6 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,12 +25,16 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.fatwong.encore.R;
 import com.fatwong.encore.adapter.PlaylistAdapter;
 import com.fatwong.encore.adapter.PopupAdapter;
+import com.fatwong.encore.bean.Album;
+import com.fatwong.encore.bean.Artist;
 import com.fatwong.encore.bean.OverFlowItem;
 import com.fatwong.encore.bean.Playlist;
 import com.fatwong.encore.bean.Song;
 import com.fatwong.encore.db.PlaylistManager;
 import com.fatwong.encore.event.UpdatePlaylistEvent;
 import com.fatwong.encore.interfaces.OnItemClickListener;
+import com.fatwong.encore.ui.activity.LocalAlbumDetailActivity;
+import com.fatwong.encore.ui.activity.LocalArtistDetailActivity;
 import com.fatwong.encore.ui.activity.LocalMusicActivity;
 import com.fatwong.encore.utils.HandlerUtils;
 import com.fatwong.encore.utils.LocalMusicLibrary;
@@ -113,6 +116,14 @@ public class SongPopupFragment extends DialogFragment {
                 switch (position) {
                     case 0:
                         showPlaylistDialog(currentSong);
+                        break;
+                    case 1:
+                        Artist artist = LocalMusicLibrary.getArtist(getContext(), currentSong.getArtistId());
+                        LocalArtistDetailActivity.open(getContext(), artist);
+                        break;
+                    case 2:
+                        Album album = LocalMusicLibrary.getAlbum(getContext(), currentSong.getAlbumId());
+                        LocalAlbumDetailActivity.open(getContext(), album);
                         break;
                     case 3:
                         startActivity(new Intent(getActivity(), LocalMusicActivity.class));

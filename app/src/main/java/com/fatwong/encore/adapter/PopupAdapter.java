@@ -56,7 +56,6 @@ public class PopupAdapter extends RecyclerView.Adapter<PopupAdapter.ListItemView
     @Override
     public void onClick(View view) {
         if (onItemClickListener != null) {
-            Log.e("Testing: ", "HIHI");
             onItemClickListener.onItemClick(view, (Integer) view.getTag());
         }
     }

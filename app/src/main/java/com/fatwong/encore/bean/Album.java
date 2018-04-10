@@ -6,7 +6,7 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
-public class AlbumInfo implements Parcelable {
+public class Album implements Parcelable {
 
     public static final String KEY_ALBUM_NAME = "album_name";
     public static final String KEY_ALBUM_ID = "album_id";
@@ -30,12 +30,12 @@ public class AlbumInfo implements Parcelable {
 
     @SerializedName(ALBUM)
     public LastfmAlbum mAlbum;
-    public static final Creator<AlbumInfo> CREATOR = new Creator<AlbumInfo>() {
+    public static final Creator<Album> CREATOR = new Creator<Album>() {
 
         //读数据恢复数据
         @Override
-        public AlbumInfo createFromParcel(Parcel source) {
-            AlbumInfo info = new AlbumInfo();
+        public Album createFromParcel(Parcel source) {
+            Album info = new Album();
             Bundle bundle = source.readBundle();
             info.album_name = bundle.getString(KEY_ALBUM_NAME);
             info.album_art = bundle.getString(KEY_ALBUM_ART);
@@ -47,8 +47,8 @@ public class AlbumInfo implements Parcelable {
         }
 
         @Override
-        public AlbumInfo[] newArray(int size) {
-            return new AlbumInfo[size];
+        public Album[] newArray(int size) {
+            return new Album[size];
         }
     };
 

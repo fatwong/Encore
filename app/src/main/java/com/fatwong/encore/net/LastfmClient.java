@@ -2,7 +2,7 @@ package com.fatwong.encore.net;
 
 import android.content.Context;
 
-import com.fatwong.encore.bean.AlbumInfo;
+import com.fatwong.encore.bean.Album;
 import com.fatwong.encore.bean.AlbumQuery;
 import com.fatwong.encore.bean.Artist;
 import com.fatwong.encore.bean.ArtistQuery;
@@ -44,15 +44,15 @@ public class LastfmClient {
     }
 
     public void getAlbumInfo(AlbumQuery albumQuery, final AlbumInfoListener listener) {
-        Call<AlbumInfo> call = apiService.getAlbumInfo(albumQuery.mArtist, albumQuery.mAlbum);
-        call.enqueue(new Callback<AlbumInfo>() {
+        Call<Album> call = apiService.getAlbumInfo(albumQuery.mArtist, albumQuery.mAlbum);
+        call.enqueue(new Callback<Album>() {
             @Override
-            public void onResponse(Call<AlbumInfo> call, Response<AlbumInfo> response) {
+            public void onResponse(Call<Album> call, Response<Album> response) {
                 listener.albumInfoSuccess(response.body().mAlbum);
             }
 
             @Override
-            public void onFailure(Call<AlbumInfo> call, Throwable t) {
+            public void onFailure(Call<Album> call, Throwable t) {
                 listener.albumInfoFailed();
             }
         });

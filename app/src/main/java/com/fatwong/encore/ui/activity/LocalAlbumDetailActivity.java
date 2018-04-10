@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,7 +14,7 @@ import com.bilibili.magicasakura.widgets.TintToolbar;
 import com.fatwong.encore.R;
 import com.fatwong.encore.adapter.LocalAlbumDetailAdapter;
 import com.fatwong.encore.base.BaseActivity;
-import com.fatwong.encore.bean.AlbumInfo;
+import com.fatwong.encore.bean.Album;
 import com.fatwong.encore.bean.PlayQueue;
 import com.fatwong.encore.bean.Song;
 import com.fatwong.encore.interfaces.OnItemClickListener;
@@ -37,19 +36,19 @@ public class LocalAlbumDetailActivity extends BaseActivity {
 
     private ActionBar actionBar;
     private LocalAlbumDetailAdapter localAlbumDetailAdapter;
-    private AlbumInfo currentAlbum;
+    private Album currentAlbum;
     private PlayQueue playQueue;
     private int currentSongPosition = -1;
 
 
-    public static void open(Context context, AlbumInfo albumInfo) {
-        context.startActivity(getIntent(context, albumInfo));
+    public static void open(Context context, Album album) {
+        context.startActivity(getIntent(context, album));
     }
 
-    private static Intent getIntent(Context context, AlbumInfo albumInfo) {
+    private static Intent getIntent(Context context, Album album) {
         Intent intent = new Intent();
         intent.setClass(context, LocalAlbumDetailActivity.class);
-        intent.putExtra("album", albumInfo);
+        intent.putExtra("album", album);
         return intent;
     }
 

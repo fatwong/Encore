@@ -8,17 +8,16 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SimpleItemAnimator;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.fatwong.encore.R;
 import com.fatwong.encore.adapter.LocalAlbumAdapter;
-import com.fatwong.encore.bean.AlbumInfo;
+import com.fatwong.encore.bean.Album;
 import com.fatwong.encore.interfaces.OnItemClickListener;
 import com.fatwong.encore.ui.activity.LocalAlbumDetailActivity;
-import com.fatwong.encore.utils.MusicUtils;
+import com.fatwong.encore.utils.LocalMusicLibrary;
 
 import java.util.List;
 
@@ -63,14 +62,14 @@ public class LocalAlbumFragment extends Fragment {
         ((SimpleItemAnimator)localAlbumRecycler.getItemAnimator()).setSupportsChangeAnimations(false);
         setItemDecoration();
         reloadAdapter();
-        localAlbumAdapter.setOnAlbumClickListener(new OnItemClickListener<AlbumInfo>() {
+        localAlbumAdapter.setOnAlbumClickListener(new OnItemClickListener<Album>() {
             @Override
-            public void onItemClick(AlbumInfo item, int position) {
+            public void onItemClick(Album item, int position) {
                 LocalAlbumDetailActivity.open(getContext(), item);
             }
 
             @Override
-            public void onItemSettingClick(View view, AlbumInfo item, int position) {
+            public void onItemSettingClick(View view, Album item, int position) {
 
             }
         });
@@ -81,9 +80,9 @@ public class LocalAlbumFragment extends Fragment {
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(Void... voids) {
-                List<AlbumInfo> albumInfoList = MusicUtils.queryAlbums(getActivity());
-                if (albumInfoList != null) {
-                    localAlbumAdapter.updateData(albumInfoList);
+                List<Album> albumList = LocalMusicLibrary.getAllAlbums(getActivity());
+                if (albumList != null) {
+                    localAlbumAdapter.updateData(albumList);
                 }
                 return null;
             }

@@ -167,7 +167,6 @@ public class PlayerActivity extends AppCompatActivity implements OnSongChangeLis
         switch (view.getId()) {
             case R.id.playing_previous:
                 MusicPlayerManager.get().playPreviousSong();
-                Log.e("Action:", "Play previous song");
                 break;
             case R.id.playing_play:
                 if (MusicPlayerManager.get().getState() == PlaybackStateCompat.STATE_PLAYING) {
