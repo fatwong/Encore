@@ -11,6 +11,9 @@ import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.imagepipeline.cache.MemoryCacheParams;
 import com.facebook.imagepipeline.core.ImagePipelineConfig;
 import com.fatwong.encore.utils.ThemeHelper;
+import com.lzy.okgo.OkGo;
+
+import okhttp3.OkHttpClient;
 
 /**
  * Created by Isaac on 2018/2/27.
@@ -33,6 +36,10 @@ public class MyApplication extends Application implements ThemeUtils.switchColor
         context = this;
         instance = this;
         ThemeUtils.setSwitchColor(this);
+        OkHttpClient.Builder builder = new OkHttpClient.Builder();
+        OkGo.getInstance().init(this)
+                .setOkHttpClient(builder.build())
+                .setRetryCount(3);
     }
 
     public void frescoInit() {

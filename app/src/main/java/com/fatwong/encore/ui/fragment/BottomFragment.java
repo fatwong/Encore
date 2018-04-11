@@ -93,7 +93,7 @@ public class BottomFragment extends BaseFragment implements OnSongChangeListener
     private void updateData() {
         String coverUrl = song.getCoverUrl();
         if (!currentSongIsPaused) {
-            ImageUtils.GlideWith(getActivity(), coverUrl, R.drawable.ah1, playBarCover);
+            ImageUtils.glideWith(getActivity(), coverUrl, R.drawable.ah1, playBarCover);
         }
         if (!TextUtils.isEmpty(song.getTitle())) {
             String title = song.getTitle();

@@ -13,7 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.fatwong.encore.R;
-import com.fatwong.encore.adapter.LocalAlbumAdapter;
+import com.fatwong.encore.adapter.LocalAlbumRecyclerAdapter;
 import com.fatwong.encore.bean.Album;
 import com.fatwong.encore.interfaces.OnItemClickListener;
 import com.fatwong.encore.ui.activity.LocalAlbumDetailActivity;
@@ -36,7 +36,7 @@ public class LocalAlbumFragment extends Fragment {
     Unbinder unbinder;
 
     private LinearLayoutManager layoutManager;
-    private LocalAlbumAdapter localAlbumAdapter;
+    private LocalAlbumRecyclerAdapter localAlbumRecyclerAdapter;
 
     public LocalAlbumFragment() {
         // Required empty public constructor
@@ -56,13 +56,13 @@ public class LocalAlbumFragment extends Fragment {
         unbinder = ButterKnife.bind(this, view);
         layoutManager = new LinearLayoutManager(getActivity());
         localAlbumRecycler.setLayoutManager(layoutManager);
-        localAlbumAdapter = new LocalAlbumAdapter(null, getActivity());
-        localAlbumRecycler.setAdapter(localAlbumAdapter);
+        localAlbumRecyclerAdapter = new LocalAlbumRecyclerAdapter(null, getActivity());
+        localAlbumRecycler.setAdapter(localAlbumRecyclerAdapter);
         localAlbumRecycler.setHasFixedSize(true);
         ((SimpleItemAnimator)localAlbumRecycler.getItemAnimator()).setSupportsChangeAnimations(false);
         setItemDecoration();
         reloadAdapter();
-        localAlbumAdapter.setOnAlbumClickListener(new OnItemClickListener<Album>() {
+        localAlbumRecyclerAdapter.setOnAlbumClickListener(new OnItemClickListener<Album>() {
             @Override
             public void onItemClick(Album item, int position) {
                 LocalAlbumDetailActivity.open(getContext(), item);
@@ -82,14 +82,14 @@ public class LocalAlbumFragment extends Fragment {
             protected Void doInBackground(Void... voids) {
                 List<Album> albumList = LocalMusicLibrary.getAllAlbums(getActivity());
                 if (albumList != null) {
-                    localAlbumAdapter.updateData(albumList);
+                    localAlbumRecyclerAdapter.updateData(albumList);
                 }
                 return null;
             }
 
             @Override
             protected void onPostExecute(Void aVoid) {
-                localAlbumAdapter.notifyDataSetChanged();
+                localAlbumRecyclerAdapter.notifyDataSetChanged();
             }
         }.execute();
 
@@ -103,7 +103,7 @@ public class LocalAlbumFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        localAlbumAdapter.notifyDataSetChanged();
+        localAlbumRecyclerAdapter.notifyDataSetChanged();
     }
 
     @Override

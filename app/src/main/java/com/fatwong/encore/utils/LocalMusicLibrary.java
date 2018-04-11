@@ -4,8 +4,11 @@ import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
 import android.database.Cursor;
+import android.media.MediaScannerConnection;
 import android.net.Uri;
+import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 
 import com.fatwong.encore.bean.Album;
 import com.fatwong.encore.bean.Artist;
@@ -81,7 +84,6 @@ public class LocalMusicLibrary {
     }
 
     public static List<Artist> getAllArtists(Context context) {
-
         Uri uri = MediaStore.Audio.Artists.EXTERNAL_CONTENT_URI;
         ContentResolver cr = context.getContentResolver();
         StringBuilder where = new StringBuilder(MediaStore.Audio.Artists._ID

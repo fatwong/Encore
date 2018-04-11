@@ -12,7 +12,7 @@ import android.view.View;
 
 import com.bilibili.magicasakura.widgets.TintToolbar;
 import com.fatwong.encore.R;
-import com.fatwong.encore.adapter.LocalArtistDetailAdapter;
+import com.fatwong.encore.adapter.LocalArtistDetailRecyclerAdapter;
 import com.fatwong.encore.base.BaseActivity;
 import com.fatwong.encore.bean.Artist;
 import com.fatwong.encore.bean.PlayQueue;
@@ -35,7 +35,7 @@ public class LocalArtistDetailActivity extends BaseActivity {
     RecyclerView artistDetailRecycler;
 
     private ActionBar actionBar;
-    private LocalArtistDetailAdapter localArtistDetailAdapter;
+    private LocalArtistDetailRecyclerAdapter localArtistDetailRecyclerAdapter;
     private Artist currentArtist;
     private PlayQueue playQueue;
     private int currentSongPosition = -1;
@@ -62,12 +62,12 @@ public class LocalArtistDetailActivity extends BaseActivity {
             finish();
         }
         setToolBar();
-        localArtistDetailAdapter = new LocalArtistDetailAdapter(this);
+        localArtistDetailRecyclerAdapter = new LocalArtistDetailRecyclerAdapter(this);
         artistDetailRecycler.setLayoutManager(new LinearLayoutManager(this));
-        artistDetailRecycler.setAdapter(localArtistDetailAdapter);
+        artistDetailRecycler.setAdapter(localArtistDetailRecyclerAdapter);
         artistDetailRecycler.setHasFixedSize(true);
         reloadAdapter();
-        localArtistDetailAdapter.setOnSongClickListener(new OnItemClickListener<Song>() {
+        localArtistDetailRecyclerAdapter.setOnSongClickListener(new OnItemClickListener<Song>() {
             @Override
             public void onItemClick(Song item, int position) {
                 if (currentSongPosition != position) {
@@ -92,14 +92,14 @@ public class LocalArtistDetailActivity extends BaseActivity {
                 List<Song> songs = LocalMusicLibrary.getArtistAllSongs(LocalArtistDetailActivity.this, (int) currentArtist.artist_id);
                 if (songs != null) {
                     playQueue.setQueue(songs);
-                    localArtistDetailAdapter.setSongs(songs);
+                    localArtistDetailRecyclerAdapter.setSongs(songs);
                 }
                 return null;
             }
 
             @Override
             protected void onPostExecute(Void aVoid) {
-                localArtistDetailAdapter.notifyDataSetChanged();
+                localArtistDetailRecyclerAdapter.notifyDataSetChanged();
             }
         }.execute();
     }

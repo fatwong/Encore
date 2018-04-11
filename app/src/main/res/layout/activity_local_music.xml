@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.fatwong.encore.ui.activity.LocalMusicActivity">
+    tools:mContext="com.fatwong.encore.ui.activity.LocalMusicActivity">
 
     <com.bilibili.magicasakura.widgets.TintToolbar
         android:id="@+id/local_music_toolbar"

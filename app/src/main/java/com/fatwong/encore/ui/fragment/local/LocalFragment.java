@@ -12,11 +12,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.fatwong.encore.R;
-import com.fatwong.encore.adapter.PlaylistAdapter;
+import com.fatwong.encore.adapter.PlaylistRecyclerAdapter;
 import com.fatwong.encore.bean.Playlist;
 import com.fatwong.encore.event.UpdatePlaylistEvent;
 import com.fatwong.encore.interfaces.OnItemClickListener;
 import com.fatwong.encore.ui.activity.CreatePlaylistActivity;
+import com.fatwong.encore.ui.activity.DownloadActivity;
 import com.fatwong.encore.ui.activity.LocalMusicActivity;
 import com.fatwong.encore.ui.activity.PlaylistDetailActivity;
 import com.fatwong.encore.ui.activity.RecentlyPlayedActivity;
@@ -39,7 +40,7 @@ public class LocalFragment extends Fragment {
     @BindView(R.id.playlist_recycler)
     RecyclerView playlistRecycler;
 
-    private PlaylistAdapter playlistAdapter;
+    private PlaylistRecyclerAdapter playlistRecyclerAdapter;
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     public LocalFragment() {
@@ -65,7 +66,7 @@ public class LocalFragment extends Fragment {
     }
 
     private void onEvent(UpdatePlaylistEvent event) {
-        playlistAdapter.updatePlaylist();
+        playlistRecyclerAdapter.updatePlaylist();
     }
 
     @Override
@@ -75,9 +76,9 @@ public class LocalFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_local, container, false);
         unbinder = ButterKnife.bind(this, view);
         playlistRecycler.setLayoutManager(new LinearLayoutManager(getActivity()));
-        playlistAdapter = new PlaylistAdapter(getActivity());
-        playlistRecycler.setAdapter(playlistAdapter);
-        playlistAdapter.setOnPlaylistClickListener(new OnItemClickListener<Playlist>() {
+        playlistRecyclerAdapter = new PlaylistRecyclerAdapter(getActivity());
+        playlistRecycler.setAdapter(playlistRecyclerAdapter);
+        playlistRecyclerAdapter.setOnPlaylistClickListener(new OnItemClickListener<Playlist>() {
             @Override
             public void onItemClick(Playlist item, int position) {
                 PlaylistDetailActivity.open(getActivity(), item);
@@ -85,7 +86,7 @@ public class LocalFragment extends Fragment {
 
             @Override
             public void onItemSettingClick(View view, Playlist item, int position) {
-                PlaylistPopupFragment playlistPopupFragment = PlaylistPopupFragment.newInstance(position, item, playlistAdapter);
+                PlaylistPopupFragment playlistPopupFragment = PlaylistPopupFragment.newInstance(position, item, playlistRecyclerAdapter);
                 playlistPopupFragment.show(getFragmentManager(), "");
             }
         });
@@ -111,6 +112,7 @@ public class LocalFragment extends Fragment {
                 RecentlyPlayedActivity.open(getActivity());
                 break;
             case R.id.downloads_layout:
+                DownloadActivity.open(getActivity());
                 break;
             case R.id.artist_layout:
                 break;

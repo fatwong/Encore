@@ -13,7 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.fatwong.encore.R;
-import com.fatwong.encore.adapter.LocalArtistAdapter;
+import com.fatwong.encore.adapter.LocalArtistRecyclerAdapter;
 import com.fatwong.encore.bean.Artist;
 import com.fatwong.encore.interfaces.OnItemClickListener;
 import com.fatwong.encore.ui.activity.LocalArtistDetailActivity;
@@ -36,7 +36,7 @@ public class LocalArtistFragment extends Fragment {
     Unbinder unbinder;
 
     private LinearLayoutManager layoutManager;
-    private LocalArtistAdapter localArtistAdapter;
+    private LocalArtistRecyclerAdapter localArtistRecyclerAdapter;
 
     public LocalArtistFragment() {
         // Required empty public constructor
@@ -56,13 +56,13 @@ public class LocalArtistFragment extends Fragment {
         unbinder = ButterKnife.bind(this, view);
         layoutManager = new LinearLayoutManager(getActivity());
         localArtistRecycler.setLayoutManager(layoutManager);
-        localArtistAdapter = new LocalArtistAdapter(null, getActivity());
-        localArtistRecycler.setAdapter(localArtistAdapter);
+        localArtistRecyclerAdapter = new LocalArtistRecyclerAdapter(null, getActivity());
+        localArtistRecycler.setAdapter(localArtistRecyclerAdapter);
         localArtistRecycler.setHasFixedSize(true);
         ((SimpleItemAnimator)localArtistRecycler.getItemAnimator()).setSupportsChangeAnimations(false);
         setItemDecoration();
         reloadAdapter();
-        localArtistAdapter.setOnArtistClickListener(new OnItemClickListener<Artist>() {
+        localArtistRecyclerAdapter.setOnArtistClickListener(new OnItemClickListener<Artist>() {
             @Override
             public void onItemClick(Artist item, int position) {
                 LocalArtistDetailActivity.open(getContext(), item);
@@ -82,14 +82,14 @@ public class LocalArtistFragment extends Fragment {
             protected Void doInBackground(Void... voids) {
                 List<Artist> artistList = LocalMusicLibrary.getAllArtists(getActivity());
                 if (artistList != null) {
-                    localArtistAdapter.updateData(artistList);
+                    localArtistRecyclerAdapter.updateData(artistList);
                 }
                 return null;
             }
 
             @Override
             protected void onPostExecute(Void aVoid) {
-                localArtistAdapter.notifyDataSetChanged();
+                localArtistRecyclerAdapter.notifyDataSetChanged();
             }
         }.execute();
 
@@ -103,7 +103,7 @@ public class LocalArtistFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        localArtistAdapter.notifyDataSetChanged();
+        localArtistRecyclerAdapter.notifyDataSetChanged();
     }
 
     @Override

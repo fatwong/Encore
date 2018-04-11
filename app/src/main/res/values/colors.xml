@@ -2,6 +2,10 @@
 <resources>
     <color name="white_text">#fafafa</color>
     <color name="transfer">#00000000</color>
+    <color name="download_bg">#ffe2e5e6</color>
+    <color name="download_decs">#ff888888</color>
+    <color name="download_line">#a39ea1a9</color>
+    <color name="download_title">#ff333333</color>
 
     <!-- notification text -->
     <color name="bottom_text">#c1c0c0</color>

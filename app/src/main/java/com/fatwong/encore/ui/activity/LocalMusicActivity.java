@@ -5,12 +5,11 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
-import android.widget.FrameLayout;
 
 import com.bilibili.magicasakura.widgets.TintToolbar;
 import com.fatwong.encore.R;
 import com.fatwong.encore.base.BaseActivity;
-import com.fatwong.encore.adapter.LocalMusicAdapter;
+import com.fatwong.encore.adapter.LocalMusicTabAdapter;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -24,7 +23,7 @@ public class LocalMusicActivity extends BaseActivity {
     @BindView(R.id.local_music_viewpager)
     ViewPager localMusicViewPager;
     private ActionBar actionBar;
-    private LocalMusicAdapter localMusicAdapter;
+    private LocalMusicTabAdapter localMusicTabAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,10 +31,10 @@ public class LocalMusicActivity extends BaseActivity {
         setContentView(R.layout.activity_local_music);
         ButterKnife.bind(this);
         setToolBar();
-        localMusicAdapter = new LocalMusicAdapter(getSupportFragmentManager());
-        localMusicViewPager.setAdapter(localMusicAdapter);
+        localMusicTabAdapter = new LocalMusicTabAdapter(getSupportFragmentManager());
+        localMusicViewPager.setAdapter(localMusicTabAdapter);
         localMusicViewPager.setCurrentItem(0);
-        localMusicViewPager.setOffscreenPageLimit(localMusicAdapter.getCount());
+        localMusicViewPager.setOffscreenPageLimit(localMusicTabAdapter.getCount());
         localMusicTab.setupWithViewPager(localMusicViewPager);
 
     }

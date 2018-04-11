@@ -75,6 +75,14 @@ public class PlayQueue {
         queue.add(position, song);
     }
 
+    public void addQueue(List<Song> songs,boolean head){
+        if(!head){
+            queue.addAll(songs);
+        }else
+            queue.addAll(0,songs);
+    }
+
+
     public Song getPreviousSong() {
         int curIndex = queue.indexOf(currentSong);
         //根据播放模式确定下一首歌曲

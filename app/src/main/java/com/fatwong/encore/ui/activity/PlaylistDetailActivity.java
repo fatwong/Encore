@@ -4,18 +4,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Spanned;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
 import com.fatwong.encore.R;
-import com.fatwong.encore.adapter.PlaylistDetailAdapter;
+import com.fatwong.encore.adapter.PlaylistDetailRecyclerAdapter;
 import com.fatwong.encore.base.BaseActivity;
 import com.fatwong.encore.bean.PlayQueue;
 import com.fatwong.encore.bean.Playlist;
@@ -44,7 +42,7 @@ public class PlaylistDetailActivity extends BaseActivity implements PlaylistDeta
     private PlayQueue playQueue;
     private int currentSongPosition = -1;
     private PlaylistDetailPresenter playlistDetailPresenter;
-    private PlaylistDetailAdapter playlistDetailAdapter;
+    private PlaylistDetailRecyclerAdapter playlistDetailAdapter;
 
     public static void open(Context context, Playlist playlist) {
         context.startActivity(getIntent(context, playlist));
@@ -63,14 +61,14 @@ public class PlaylistDetailActivity extends BaseActivity implements PlaylistDeta
         setContentView(R.layout.activity_music_detail);
         ButterKnife.bind(this);
         playQueue = new PlayQueue();
-        playlistDetailAdapter = new PlaylistDetailAdapter(this);
+        playlistDetailAdapter = new PlaylistDetailRecyclerAdapter(this);
         songList.setAdapter(playlistDetailAdapter);
         songList.setLayoutManager(new LinearLayoutManager(this));
         currentPlaylist = (Playlist) getIntent().getSerializableExtra("playlist");
         if (currentPlaylist == null) {
             finish();
         }
-        ImageUtils.GlideWith(this, currentPlaylist.getCoverUrl(), R.drawable.a8y, backgroundAlbumArt);
+        ImageUtils.glideWith(this, currentPlaylist.getCoverUrl(), R.drawable.a8y, backgroundAlbumArt);
         toolbar.setTitle(currentPlaylist.getTitle());
         playlistDetailPresenter = new PlaylistDetailPresenter(currentPlaylist, this);
         playlistDetailPresenter.init();

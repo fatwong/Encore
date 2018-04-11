@@ -21,8 +21,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.fatwong.encore.R;
-import com.fatwong.encore.adapter.PlaylistAdapter;
-import com.fatwong.encore.adapter.PopupAdapter;
+import com.fatwong.encore.adapter.PlaylistRecyclerAdapter;
+import com.fatwong.encore.adapter.PopupRecyclerAdapter;
 import com.fatwong.encore.bean.OverFlowItem;
 import com.fatwong.encore.bean.Playlist;
 import com.fatwong.encore.db.PlaylistManager;
@@ -58,8 +58,8 @@ public class PlaylistPopupFragment extends DialogFragment {
     private Handler mHandler;
     private LinearLayoutManager layoutManager;
     private List<OverFlowItem> overFlowItemList = new ArrayList<>();  //声明一个list，动态存储要显示的信息
-    private PopupAdapter popupAdapter;
-    private PlaylistAdapter playlistAdapter;
+    private PopupRecyclerAdapter popupRecyclerAdapter;
+    private PlaylistRecyclerAdapter playlistRecyclerAdapter;
     private Playlist currentPlaylist;
     private int currentPosition;
 
@@ -67,11 +67,11 @@ public class PlaylistPopupFragment extends DialogFragment {
         // Required empty public constructor
     }
 
-    public static PlaylistPopupFragment newInstance(int position, Playlist playlist, PlaylistAdapter playlistAdapter) {
+    public static PlaylistPopupFragment newInstance(int position, Playlist playlist, PlaylistRecyclerAdapter playlistRecyclerAdapter) {
         PlaylistPopupFragment fragment = new PlaylistPopupFragment();
         fragment.currentPosition = position;
         fragment.currentPlaylist = playlist;
-        fragment.playlistAdapter = playlistAdapter;
+        fragment.playlistRecyclerAdapter = playlistRecyclerAdapter;
         return fragment;
     }
 
@@ -101,9 +101,9 @@ public class PlaylistPopupFragment extends DialogFragment {
         popupList.setLayoutManager(layoutManager);
         popupList.setHasFixedSize(true);
         setPopupList();
-        popupAdapter = new PopupAdapter(getActivity(), overFlowItemList);
-        popupList.setAdapter(popupAdapter);
-        popupAdapter.setOnItemClickListener(new PopupAdapter.OnRecyclerViewItemClickListener() {
+        popupRecyclerAdapter = new PopupRecyclerAdapter(getActivity(), overFlowItemList);
+        popupList.setAdapter(popupRecyclerAdapter);
+        popupRecyclerAdapter.setOnItemClickListener(new PopupRecyclerAdapter.OnRecyclerViewItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
                 switch (position) {
@@ -116,7 +116,7 @@ public class PlaylistPopupFragment extends DialogFragment {
                         break;
                     case TYPE_DELETE:
                         PlaylistManager.getInstance().deletePlaylist(currentPlaylist);
-                        playlistAdapter.deletePlaylist(currentPlaylist);
+                        playlistRecyclerAdapter.deletePlaylist(currentPlaylist);
                         break;
                 }
                 dismiss();

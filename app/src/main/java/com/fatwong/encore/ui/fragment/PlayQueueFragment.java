@@ -19,7 +19,7 @@ import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.fatwong.encore.R;
-import com.fatwong.encore.adapter.PlayQueueAdapter;
+import com.fatwong.encore.adapter.PlayQueueRecyclerAdapter;
 import com.fatwong.encore.bean.Song;
 import com.fatwong.encore.interfaces.OnItemClickListener;
 import com.fatwong.encore.interfaces.OnSongChangeListener;
@@ -49,7 +49,7 @@ public class PlayQueueFragment extends DialogFragment implements OnSongChangeLis
     Unbinder unbinder;
 
     private Context mContext;
-    private PlayQueueAdapter playQueueAdapter;
+    private PlayQueueRecyclerAdapter playQueueAdapter;
 
     public PlayQueueFragment() {
         // Required empty public constructor
@@ -79,7 +79,7 @@ public class PlayQueueFragment extends DialogFragment implements OnSongChangeLis
     }
 
     private void initRecyclerView(View view) {
-        playQueueAdapter = new PlayQueueAdapter(getActivity());
+        playQueueAdapter = new PlayQueueRecyclerAdapter(getActivity());
         LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
         playQueueRecycler.setLayoutManager(layoutManager);
         playQueueRecycler.setHasFixedSize(true);

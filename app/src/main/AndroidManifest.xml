@@ -10,6 +10,7 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEM" />
 
     <application
         android:name=".MyApplication"
@@ -64,9 +65,11 @@
         </provider>
 
         <activity android:name=".ui.activity.PlaylistDetailActivity" />
-        <activity android:name=".ui.activity.MusicDetailActivity" />
         <activity android:name=".ui.activity.LocalArtistDetailActivity" />
-        <activity android:name=".ui.activity.LocalAlbumDetailActivity"></activity>
+        <activity android:name=".ui.activity.LocalAlbumDetailActivity" />
+        <activity android:name=".ui.activity.discover.OnlinePlaylistDetailActivity" />
+        <activity android:name=".ui.activity.DownloadActivity" />
+        <activity android:name=".ui.activity.discover.ChartDetailActivity" />
     </application>
 
 </manifest>

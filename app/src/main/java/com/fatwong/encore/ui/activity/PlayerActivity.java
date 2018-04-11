@@ -10,7 +10,6 @@ import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.Spanned;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.SeekBar;
@@ -130,7 +129,7 @@ public class PlayerActivity extends AppCompatActivity implements OnSongChangeLis
 
     private void updateData() {
         final String coverUrl = song.getCoverUrl();
-        ImageUtils.GlideWith(this, coverUrl, R.drawable.ah1, coverImage);
+        ImageUtils.glideWith(this, coverUrl, R.drawable.ah1, coverImage);
         if (!TextUtils.isEmpty(song.getAlbumName())) {
             String albumName = song.getAlbumName();
             Spanned s = Html.fromHtml(albumName);

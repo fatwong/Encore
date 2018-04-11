@@ -12,7 +12,7 @@ import android.view.View;
 
 import com.bilibili.magicasakura.widgets.TintToolbar;
 import com.fatwong.encore.R;
-import com.fatwong.encore.adapter.LocalAlbumDetailAdapter;
+import com.fatwong.encore.adapter.LocalAlbumDetailRecyclerAdapter;
 import com.fatwong.encore.base.BaseActivity;
 import com.fatwong.encore.bean.Album;
 import com.fatwong.encore.bean.PlayQueue;
@@ -35,7 +35,7 @@ public class LocalAlbumDetailActivity extends BaseActivity {
     RecyclerView albumDetailRecycler;
 
     private ActionBar actionBar;
-    private LocalAlbumDetailAdapter localAlbumDetailAdapter;
+    private LocalAlbumDetailRecyclerAdapter localAlbumDetailRecyclerAdapter;
     private Album currentAlbum;
     private PlayQueue playQueue;
     private int currentSongPosition = -1;
@@ -63,12 +63,12 @@ public class LocalAlbumDetailActivity extends BaseActivity {
             finish();
         }
         setToolBar();
-        localAlbumDetailAdapter = new LocalAlbumDetailAdapter(this);
+        localAlbumDetailRecyclerAdapter = new LocalAlbumDetailRecyclerAdapter(this);
         albumDetailRecycler.setLayoutManager(new LinearLayoutManager(this));
-        albumDetailRecycler.setAdapter(localAlbumDetailAdapter);
+        albumDetailRecycler.setAdapter(localAlbumDetailRecyclerAdapter);
         albumDetailRecycler.setHasFixedSize(true);
         reloadAdapter();
-        localAlbumDetailAdapter.setOnSongClickListener(new OnItemClickListener<Song>() {
+        localAlbumDetailRecyclerAdapter.setOnSongClickListener(new OnItemClickListener<Song>() {
             @Override
             public void onItemClick(Song item, int position) {
                 if (currentSongPosition != position) {
@@ -93,14 +93,14 @@ public class LocalAlbumDetailActivity extends BaseActivity {
                 List<Song> songs = LocalMusicLibrary.getAlbumAllSongs(LocalAlbumDetailActivity.this, currentAlbum.album_id);
                 if (songs != null) {
                     playQueue.setQueue(songs);
-                    localAlbumDetailAdapter.setSongs(songs);
+                    localAlbumDetailRecyclerAdapter.setSongs(songs);
                 }
                 return null;
             }
 
             @Override
             protected void onPostExecute(Void aVoid) {
-                localAlbumDetailAdapter.notifyDataSetChanged();
+                localAlbumDetailRecyclerAdapter.notifyDataSetChanged();
             }
         }.execute();
     }

@@ -23,23 +23,31 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.fatwong.encore.R;
-import com.fatwong.encore.adapter.PlaylistAdapter;
-import com.fatwong.encore.adapter.PopupAdapter;
+import com.fatwong.encore.adapter.PlaylistRecyclerAdapter;
+import com.fatwong.encore.adapter.PopupRecyclerAdapter;
 import com.fatwong.encore.bean.Album;
 import com.fatwong.encore.bean.Artist;
 import com.fatwong.encore.bean.OverFlowItem;
 import com.fatwong.encore.bean.Playlist;
 import com.fatwong.encore.bean.Song;
+import com.fatwong.encore.bean.SongInfo;
 import com.fatwong.encore.db.PlaylistManager;
 import com.fatwong.encore.event.UpdatePlaylistEvent;
+import com.fatwong.encore.interfaces.ICallback;
 import com.fatwong.encore.interfaces.OnItemClickListener;
+import com.fatwong.encore.net.LogDownloadListener;
 import com.fatwong.encore.ui.activity.LocalAlbumDetailActivity;
 import com.fatwong.encore.ui.activity.LocalArtistDetailActivity;
 import com.fatwong.encore.ui.activity.LocalMusicActivity;
 import com.fatwong.encore.utils.HandlerUtils;
 import com.fatwong.encore.utils.LocalMusicLibrary;
+import com.fatwong.encore.utils.OkGoUtils;
 import com.fatwong.encore.utils.RxBus;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.request.GetRequest;
+import com.lzy.okserver.OkDownload;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,7 +72,7 @@ public class SongPopupFragment extends DialogFragment {
     private Handler mHandler;
     private LinearLayoutManager layoutManager;
     private List<OverFlowItem> popupItemList = new ArrayList<>();  //声明一个list，动态存储要显示的信息
-    private PopupAdapter popupAdapter;
+    private PopupRecyclerAdapter popupRecyclerAdapter;
     private Song currentSong;
 
 
@@ -108,9 +116,9 @@ public class SongPopupFragment extends DialogFragment {
         popupList.setLayoutManager(layoutManager);
         popupList.setHasFixedSize(true);
         setPopupList();
-        popupAdapter = new PopupAdapter(getActivity(), popupItemList);
-        popupList.setAdapter(popupAdapter);
-        popupAdapter.setOnItemClickListener(new PopupAdapter.OnRecyclerViewItemClickListener() {
+        popupRecyclerAdapter = new PopupRecyclerAdapter(getActivity(), popupItemList);
+        popupList.setAdapter(popupRecyclerAdapter);
+        popupRecyclerAdapter.setOnItemClickListener(new PopupRecyclerAdapter.OnRecyclerViewItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
                 switch (position) {
@@ -152,12 +160,12 @@ public class SongPopupFragment extends DialogFragment {
     }
 
     private void showPlaylistDialog(final Song song) {
-        PlaylistAdapter playlistAdapter = new PlaylistAdapter(mContext);
+        PlaylistRecyclerAdapter playlistRecyclerAdapter = new PlaylistRecyclerAdapter(mContext);
         final MaterialDialog dialog = new MaterialDialog.Builder(mContext)
                 .title(R.string.collection_dialog_selection_title)
-                .adapter(playlistAdapter, new LinearLayoutManager(mContext))
+                .adapter(playlistRecyclerAdapter, new LinearLayoutManager(mContext))
                 .build();
-        playlistAdapter.setOnPlaylistClickListener(new OnItemClickListener<Playlist>() {
+        playlistRecyclerAdapter.setOnPlaylistClickListener(new OnItemClickListener<Playlist>() {
             @Override
             public void onItemClick(Playlist item, int position) {
                 if (item == null) {
@@ -194,6 +202,7 @@ public class SongPopupFragment extends DialogFragment {
         if (currentSong.getQuality() != null) {
             setPopupItem("音质: " + currentSong.getQuality(), R.drawable.ic_red_quality);
         }
+        setPopupItem("下载",R.drawable.ic_red_download);
         setPopupItem("分享", R.drawable.ic_red_share);
     }
 

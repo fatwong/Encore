@@ -24,7 +24,8 @@ import com.fatwong.encore.base.BaseActivity;
 import com.fatwong.encore.bean.Song;
 import com.fatwong.encore.service.MusicPlayerManager;
 import com.fatwong.encore.ui.MainViewPager;
-import com.fatwong.encore.ui.fragment.album.AlbumFragment;
+import com.fatwong.encore.ui.fragment.DynamicFragment;
+import com.fatwong.encore.ui.fragment.discover.DiscoverFragment;
 import com.fatwong.encore.ui.fragment.local.LocalFragment;
 
 import java.util.ArrayList;
@@ -101,10 +102,12 @@ public class MainActivity extends BaseActivity {
 
         MyPagerAdapter myPagerAdapter = new MyPagerAdapter(getSupportFragmentManager());
         LocalFragment localFragment = new LocalFragment();
-        AlbumFragment albumFragment = new AlbumFragment();
+        DiscoverFragment discoverFragment = new DiscoverFragment();
+        DynamicFragment dynamicFragment = new DynamicFragment();
 
-        myPagerAdapter.addFragment(albumFragment);
+        myPagerAdapter.addFragment(discoverFragment);
         myPagerAdapter.addFragment(localFragment);
+        myPagerAdapter.addFragment(dynamicFragment);
         mainViewPager.setAdapter(myPagerAdapter);
         mainViewPager.setCurrentItem(1);
         barMusic.setSelected(true);

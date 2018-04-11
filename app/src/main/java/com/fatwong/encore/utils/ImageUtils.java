@@ -16,7 +16,7 @@ import com.bumptech.glide.request.transition.Transition;
  */
 
 public class ImageUtils {
-    public static void GlideWith(Context context, String coverUrl, int resID, final ImageView imageView) {
+    public static void glideWith(Context context, String coverUrl, int resID, final ImageView imageView) {
         Glide.with(context)
                 .load(coverUrl)
                 .apply(RequestOptions.placeholderOf(resID))
@@ -31,5 +31,12 @@ public class ImageUtils {
                         imageView.setImageDrawable(errorDrawable);
                     }
                 });
+    }
+
+    public static void glideWithRoundImage(Context context, String url,ImageView imageView){
+        Glide.with(context)
+                .load(url)
+                .apply(new RequestOptions().transform(new GlideCircleTransform()))
+                .into(imageView);
     }
 }
