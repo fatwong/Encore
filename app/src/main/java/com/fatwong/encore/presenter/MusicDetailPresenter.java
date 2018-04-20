@@ -66,6 +66,23 @@ public class MusicDetailPresenter {
                             }
                         });
                 break;
+            case 2:
+                OkGo.<String>get(APIService.BASE_PARAMETERS_URL + "rankinginside/" + id)
+                        .execute(new StringCallback() {
+                            @Override
+                            public void onSuccess(Response<String> response) {
+                                Gson gson = new Gson();
+                                ChartInfo chartInfo = gson.fromJson(response.body(), ChartInfo.class);
+                                chartDetailIView.loadMusicDetailData(chartInfo);
+                            }
+
+                            @Override
+                            public void onError(Response<String> response) {
+                                super.onError(response);
+                                chartDetailIView.loadFail(response.getException());
+                            }
+                        });
+                break;
         }
     }
 }

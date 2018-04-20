@@ -34,6 +34,7 @@
                                   <option name="values">
                                     <map>
                                       <entry key="outputName" value="actionbar_player" />
+                                      <entry key="theme" value="HOLO_DARK" />
                                     </map>
                                   </option>
                                 </PersistentState>

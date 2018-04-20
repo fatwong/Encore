@@ -1,10 +1,11 @@
 package com.fatwong.encore.adapter;
 
-
 import android.content.Context;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,46 +15,42 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.fatwong.encore.R;
-import com.fatwong.encore.bean.OnlinePlaylistInfo;
+import com.fatwong.encore.bean.SearchSongInfo;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class OnlinePlaylistDetailRecyclerAdapter extends RecyclerView.Adapter<OnlinePlaylistDetailRecyclerAdapter.OnlinePlaylistDetailViewHolder> {
-
+public class SearchSongRecyclerAdapter extends RecyclerView.Adapter<SearchSongRecyclerAdapter.SearchSongRecyclerViewHolder> {
 
     private Context mContext;
-    private OnlinePlaylistInfo info;
-    private long playingId;
+    private ArrayList<SearchSongInfo> songInfoList;
 
 
-    public OnlinePlaylistDetailRecyclerAdapter(Context context) {
+    public SearchSongRecyclerAdapter(Context context, ArrayList<SearchSongInfo> searchSongInfos) {
         this.mContext = context;
+        this.songInfoList = searchSongInfos;
     }
 
     @Override
-    public OnlinePlaylistDetailViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public SearchSongRecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.recycler_music_listitem, parent, false);
-        return new OnlinePlaylistDetailViewHolder(view);
+        return new SearchSongRecyclerViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(final OnlinePlaylistDetailViewHolder holder, int position) {
-        final OnlinePlaylistInfo.ContentBean song = info.getContent().get(position);
-        holder.songTitle.setText(song.getTitle());
+    public void onBindViewHolder(final SearchSongRecyclerViewHolder holder, int position) {
+        final SearchSongInfo song = songInfoList.get(position);
+        holder.songTitle.setText(Html.fromHtml(song.getTitle()));
         if (TextUtils.isEmpty(song.getAuthor())) {
             holder.songArtist.setVisibility(View.GONE);
         } else {
             holder.songArtist.setVisibility(View.VISIBLE);
-            holder.songArtist.setText(song.getAuthor());
+            holder.songArtist.setText(Html.fromHtml(song.getAuthor()));
         }
         int number = position + 1;
         holder.songNumber.setText(String.valueOf(number));
-
-        //TODO 设置音乐的状态
-
-
-        // 如果设置了回调，则设置点击事件
         if (onSongClickListener != null) {
             holder.musicItem.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -65,33 +62,19 @@ public class OnlinePlaylistDetailRecyclerAdapter extends RecyclerView.Adapter<On
             holder.songSettings.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    onSongClickListener.onSongSettingsClick(view, holder.getAdapterPosition(), info);
+                    onSongClickListener.onSongSettingsClick(view, holder.getAdapterPosition(), songInfoList);
                 }
             });
         }
     }
 
-    public void setData(OnlinePlaylistInfo info) {
-        this.info = info;
-        notifyDataSetChanged();
-    }
-
-    @Override
-    public int getItemCount() {
-        return info != null ? info.getContent().size() : 0;
-    }
-
-    public long getPlayingId() {
-        return playingId;
-    }
-
-    public void setPlayingId(long playingId) {
-        this.playingId = playingId;
+    public void setData(ArrayList<SearchSongInfo> songInfos) {
+        this.songInfoList = songInfos;
     }
 
     public interface OnSongClickListener {
         void onSongClick(View view, int position, String songId);
-        void onSongSettingsClick(View view, int position, OnlinePlaylistInfo onlinePlaylistInfo);
+        void onSongSettingsClick(View view, int position, ArrayList<SearchSongInfo> searchSongInfos);
     }
 
     private OnSongClickListener onSongClickListener;
@@ -100,7 +83,12 @@ public class OnlinePlaylistDetailRecyclerAdapter extends RecyclerView.Adapter<On
         this.onSongClickListener = onSongClickListener;
     }
 
-    public class OnlinePlaylistDetailViewHolder extends RecyclerView.ViewHolder {
+    @Override
+    public int getItemCount() {
+        return (songInfoList != null ? songInfoList.size() : 0);
+    }
+
+    public static class SearchSongRecyclerViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.song_number)
         TextView songNumber;
         @BindView(R.id.song_playing_icon)
@@ -116,10 +104,9 @@ public class OnlinePlaylistDetailRecyclerAdapter extends RecyclerView.Adapter<On
         @BindView(R.id.music_item)
         RelativeLayout musicItem;
 
-        public OnlinePlaylistDetailViewHolder(View view) {
+        public SearchSongRecyclerViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
         }
     }
 }
-

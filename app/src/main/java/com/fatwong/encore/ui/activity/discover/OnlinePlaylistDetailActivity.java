@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -95,7 +96,7 @@ public class OnlinePlaylistDetailActivity extends AppCompatActivity implements O
         songRecycler.setAdapter(detailRecyclerAdapter);
         detailRecyclerAdapter.setOnSongClickListener(new OnlinePlaylistDetailRecyclerAdapter.OnSongClickListener() {
             @Override
-            public void onSongClick(View view, final int position, String songId) {
+            public void onSongClick(View view, final int position, final String songId) {
                 final PlayQueue playQueue = new PlayQueue();
                 OkGoUtils.getInstance().getSongInfo(songId, new ICallback() {
                     @Override

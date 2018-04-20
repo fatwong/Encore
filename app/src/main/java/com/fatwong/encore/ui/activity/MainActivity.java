@@ -25,6 +25,7 @@ import com.fatwong.encore.bean.Song;
 import com.fatwong.encore.service.MusicPlayerManager;
 import com.fatwong.encore.ui.MainViewPager;
 import com.fatwong.encore.ui.fragment.DynamicFragment;
+import com.fatwong.encore.ui.fragment.NetSearchFragment;
 import com.fatwong.encore.ui.fragment.discover.DiscoverFragment;
 import com.fatwong.encore.ui.fragment.local.LocalFragment;
 
@@ -40,7 +41,7 @@ public class MainActivity extends BaseActivity {
     ImageView barNet;
     @BindView(R.id.bar_music)
     ImageView barMusic;
-    @BindView(R.id.bar_friends)
+    @BindView(R.id.bar_search)
     ImageView barFriends;
     @BindView(R.id.bar_player)
     ImageView barPlayer;
@@ -99,15 +100,17 @@ public class MainActivity extends BaseActivity {
     private void setCustomViewPager() {
         tabs.add(barNet);
         tabs.add(barMusic);
+        tabs.add(barFriends);
 
         MyPagerAdapter myPagerAdapter = new MyPagerAdapter(getSupportFragmentManager());
         LocalFragment localFragment = new LocalFragment();
         DiscoverFragment discoverFragment = new DiscoverFragment();
         DynamicFragment dynamicFragment = new DynamicFragment();
+        NetSearchFragment netSearchFragment = new NetSearchFragment();
 
         myPagerAdapter.addFragment(discoverFragment);
         myPagerAdapter.addFragment(localFragment);
-        myPagerAdapter.addFragment(dynamicFragment);
+        myPagerAdapter.addFragment(netSearchFragment);
         mainViewPager.setAdapter(myPagerAdapter);
         mainViewPager.setCurrentItem(1);
         barMusic.setSelected(true);
@@ -172,7 +175,7 @@ public class MainActivity extends BaseActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    @OnClick({R.id.bar_net, R.id.bar_music, R.id.bar_friends, R.id.bar_player})
+    @OnClick({R.id.bar_net, R.id.bar_music, R.id.bar_search, R.id.bar_player})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bar_net:
@@ -181,7 +184,7 @@ public class MainActivity extends BaseActivity {
             case R.id.bar_music:
                 mainViewPager.setCurrentItem(1);
                 break;
-            case R.id.bar_friends:
+            case R.id.bar_search:
                 mainViewPager.setCurrentItem(2);
                 break;
             case R.id.bar_player:

@@ -59,12 +59,12 @@
                     app:layout_heightPercent="77%"
                     app:layout_widthPercent="76%"/>
 
-                <!--<com.cainiao5.cainiaomusic.ui.widget.AlbumViewPager-->
-                <!--android:id="@+id/view_pager"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="match_parent"-->
-                <!--android:layout_centerInParent="true"-->
-                <!--android:layout_gravity="center_horizontal"/>-->
+                <com.fatwong.encore.ui.AlbumViewPager
+                android:id="@+id/view_pager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center_horizontal"/>
 
                 <View
                     android:id="@+id/view_line"
@@ -72,20 +72,6 @@
                     android:layout_height="1.0dip"
                     android:layout_alignParentTop="true"
                     android:background="@drawable/play_topbar_line"/>
-
-                <ImageView
-                    android:id="@+id/needle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_below="@+id/view_line"
-                    android:layout_marginTop="-16dp"
-                    android:rotation="-30"
-                    android:src="@drawable/play_needle"
-                    android:transformPivotX="15.1dp"
-                    android:transformPivotY="15.1dp"
-                    app:layout_marginRightPercent="23%"
-
                     />
             </android.support.percent.PercentRelativeLayout>
 
@@ -95,8 +81,8 @@
             android:id="@+id/lrcviewContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="?attr/actionBarSize"
             android:visibility="invisible"
+            android:layout_marginTop="?attr/actionBarSize"
             app:layout_heightPercent="70%">
 
             <LinearLayout
@@ -131,27 +117,18 @@
                     android:thumbOffset="3.0dip"/>
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/tragetlrc"
-                android:layout_width="100dp"
-                android:layout_height="30dp"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
-                android:layout_gravity="bottom|center_horizontal"
-                android:layout_marginBottom="10dp"
-                android:background="#70d7d7d7"
-                android:focusable="false"
-                android:gravity="center"
-                android:padding="5dp"
-                android:text="获取封面和歌词"
-                android:textAlignment="center"/>
-
-            <!--<com.cainiao5.cainiaomusic.ui.lrc.LrcView-->
-            <!--android:id="@+id/lrcview"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:layout_below="@+id/volume_layout"-->
-            <!--android:layout_marginTop="10dp"/>-->
+            <me.wcy.lrcview.LrcView
+                android:id="@+id/lrc_small"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                app:lrcAnimationDuration="600"
+                app:lrcCurrentTextColor="@color/theme_color_Primary"
+                app:lrcDividerHeight="16dp"
+                app:lrcLabel="找不到歌词(&gt;_&lt;)"
+                app:lrcNormalTextColor="@android:color/white"
+                app:lrcPadding="100dp"
+                app:lrcTextSize="17sp"/>
         </RelativeLayout>
 
         <LinearLayout

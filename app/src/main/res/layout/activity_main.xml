@@ -6,6 +6,7 @@
     android:id="@+id/drawer_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     tools:mContext="com.fatwong.encore.ui.activity.MainActivity">
 
     <RelativeLayout
@@ -19,7 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/theme_color_primary"
-            android:minHeight="?attr/actionBarSize"
+            android:minHeight="?android:attr/actionBarSize"
             android:id="@+id/toolbar"
             app:contentInsetStart="0.0dp"
             app:layout_scrollFlags="enterAlways|scroll">
@@ -27,7 +28,7 @@
             <RelativeLayout
                 android:gravity="center"
                 android:layout_width="match_parent"
-                android:layout_height="?actionBarSize">
+                android:layout_height="?android:actionBarSize">
 
                 <ImageView
                     android:id="@+id/bar_net"
@@ -46,21 +47,23 @@
                     android:clickable="true" />
 
                 <ImageView
-                    android:id="@+id/bar_friends"
-                    android:layout_width="55dp"
-                    android:layout_height="match_parent"
+                    android:id="@+id/bar_search"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginLeft="10dp"
                     android:layout_toRightOf="@+id/bar_music"
-                    android:background="@drawable/actionbar_friends"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/actionbar_search"
                     android:clickable="true" />
 
                 <ImageView
                     android:id="@+id/bar_player"
-                    android:layout_width="23dp"
-                    android:layout_height="23dp"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:scaleType="center"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:background="@drawable/actionbar_search" />
+                    android:background="@drawable/actionbar_player" />
             </RelativeLayout>
 
         </com.bilibili.magicasakura.widgets.TintToolbar>

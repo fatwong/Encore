@@ -58,7 +58,7 @@ public class OnlinePlaylistRecyclerAdapter extends RecyclerView.Adapter<OnlinePl
 
     @Override
     public int getItemCount() {
-        return resultData.size();
+        return resultData != null ? resultData.size() : 0;
     }
 
     public class OnlinePlaylistViewHolder extends RecyclerView.ViewHolder {

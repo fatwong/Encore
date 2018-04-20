@@ -2,6 +2,8 @@ package com.fatwong.encore.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.media.session.PlaybackStateCompat;
@@ -10,8 +12,14 @@ import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.Spanned;
 import android.text.TextUtils;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -19,10 +27,14 @@ import com.fatwong.encore.R;
 import com.fatwong.encore.bean.Song;
 import com.fatwong.encore.interfaces.OnSongChangeListener;
 import com.fatwong.encore.service.MusicPlayerManager;
+import com.fatwong.encore.ui.AlbumViewPager;
 import com.fatwong.encore.ui.fragment.PlayQueueFragment;
 import com.fatwong.encore.ui.fragment.SongPopupFragment;
 import com.fatwong.encore.utils.ImageUtils;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.concurrent.TimeUnit;
 
@@ -32,6 +44,7 @@ import butterknife.OnClick;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
+import me.wcy.lrcview.LrcView;
 
 public class PlayerActivity extends AppCompatActivity implements OnSongChangeListener {
 
@@ -53,6 +66,14 @@ public class PlayerActivity extends AppCompatActivity implements OnSongChangeLis
     ImageView coverImage;
     @BindView(R.id.playing_playlist)
     ImageView playingPlaylist;
+    @BindView(R.id.lrcviewContainer)
+    RelativeLayout lrcviewContainer;
+    @BindView(R.id.lrc_small)
+    LrcView lrcSmall;
+    @BindView(R.id.headerView)
+    FrameLayout headerView;
+    @BindView(R.id.music_tool)
+    LinearLayout musicTool;
 
     private Song song;
 
@@ -64,8 +85,35 @@ public class PlayerActivity extends AppCompatActivity implements OnSongChangeLis
 
         MusicPlayerManager.get().registerOnSongChangedListener(this);
         initData();
+        initLrcView();
+        getLrcData();
         updateProgress();
         updateData();
+        makeStatusBarTransparent();
+    }
+
+    private void initLrcView() {
+        coverImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (coverImage.getVisibility() == View.VISIBLE) {
+                    coverImage.setVisibility(View.INVISIBLE);
+                    lrcviewContainer.setVisibility(View.VISIBLE);
+                    musicTool.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
+        lrcviewContainer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (lrcviewContainer.getVisibility() == View.VISIBLE) {
+                    lrcviewContainer.setVisibility(View.INVISIBLE);
+                    coverImage.setVisibility(View.VISIBLE);
+                    musicTool.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
     }
 
 
@@ -73,11 +121,37 @@ public class PlayerActivity extends AppCompatActivity implements OnSongChangeLis
     public void onSongChanged(Song song) {
         this.song = song;
         updateData();
+        getLrcData();
     }
 
     @Override
     public void onPlayBackStateChanged(PlaybackStateCompat stateCompat) {
 
+    }
+
+    private void getLrcData() {
+        lrcSmall.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                lrcSmall.loadLrc(getLrcText(MusicPlayerManager.get().getCurrentSong().getId() + ".lrc"));
+            }
+        }, 3000);
+    }
+
+    private String getLrcText(String fileName) {
+        String lrcText = null;
+        try {
+            File file = new File("sdcard/download/" + fileName);
+            FileInputStream fis = new FileInputStream(file);
+            int size = fis.available();
+            byte[] buffer = new byte[size];
+            fis.read(buffer);
+            fis.close();
+            lrcText = new String(buffer);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return lrcText;
     }
 
     private void initData() {
@@ -118,6 +192,7 @@ public class PlayerActivity extends AppCompatActivity implements OnSongChangeLis
                         playingSeekBar.setProgress(MusicPlayerManager.get().getCurrentPosition());
                         musicDuration.setText(formatDuration(MusicPlayerManager.get().getCurrentMaxDuration()));
                         musicPlayedDuration.setText(formatDuration(MusicPlayerManager.get().getCurrentPosition()));
+                        lrcSmall.updateTime(MusicPlayerManager.get().getCurrentPosition());
                     }
                 }, new Consumer<Throwable>() {
                     @Override
@@ -135,10 +210,19 @@ public class PlayerActivity extends AppCompatActivity implements OnSongChangeLis
             Spanned s = Html.fromHtml(albumName);
             getSupportActionBar().setTitle(s);
         }
-        toolbar.setTitle(song.getTitle());
+        toolbar.setTitle(Html.fromHtml(song.getTitle()));
         if (MusicPlayerManager.get().getCurrentSong() != null) {
             playingPlay.setImageResource(R.drawable.play_rdi_btn_pause);
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     public String formatDuration(int millSecDuration) {
@@ -147,6 +231,12 @@ public class PlayerActivity extends AppCompatActivity implements OnSongChangeLis
         int durationMinute = (durationSeconds - durationSecond) / 60;
         DecimalFormat decimalFormat = new DecimalFormat("00");
         return decimalFormat.format(durationMinute) + ":" + decimalFormat.format(durationSecond);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateData();
     }
 
     @Override
@@ -159,6 +249,20 @@ public class PlayerActivity extends AppCompatActivity implements OnSongChangeLis
         Intent intent = new Intent();
         intent.setClass(context, PlayerActivity.class);
         context.startActivity(intent);
+    }
+
+    private void makeStatusBarTransparent() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = getWindow();
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN |
+                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(Color.TRANSPARENT);
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+
+        }
     }
 
     @OnClick({R.id.playing_previous, R.id.playing_play, R.id.playing_next, R.id.playing_playlist, R.id.playing_more})

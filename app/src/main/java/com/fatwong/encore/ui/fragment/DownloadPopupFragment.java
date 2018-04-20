@@ -7,6 +7,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +23,7 @@ import com.fatwong.encore.adapter.PopupRecyclerAdapter;
 import com.fatwong.encore.bean.ChartInfo;
 import com.fatwong.encore.bean.OnlinePlaylistInfo;
 import com.fatwong.encore.bean.OverFlowItem;
+import com.fatwong.encore.bean.SearchSongInfo;
 import com.fatwong.encore.bean.SongInfo;
 import com.fatwong.encore.interfaces.ICallback;
 import com.fatwong.encore.net.LogDownloadListener;
@@ -57,6 +59,7 @@ public class DownloadPopupFragment extends DialogFragment {
     private OnlinePlaylistInfo.ContentBean playlistInfoContentBean;
     private ChartInfo chartInfo;
     private ChartInfo.SongListBean songListBean;
+    private ArrayList<SearchSongInfo> searchSongInfos;
 
 
     public DownloadPopupFragment() {
@@ -74,6 +77,14 @@ public class DownloadPopupFragment extends DialogFragment {
     public static DownloadPopupFragment newInstance(ChartInfo info, Context context, int position) {
         DownloadPopupFragment fragment = new DownloadPopupFragment();
         fragment.chartInfo = info;
+        fragment.mContext = context;
+        fragment.position = position;
+        return fragment;
+    }
+
+    public static DownloadPopupFragment newInstance(ArrayList<SearchSongInfo> songInfos, Context context, int position) {
+        DownloadPopupFragment fragment = new DownloadPopupFragment();
+        fragment.searchSongInfos = songInfos;
         fragment.mContext = context;
         fragment.position = position;
         return fragment;
@@ -161,24 +172,30 @@ public class DownloadPopupFragment extends DialogFragment {
     public String getCurrentSongId() {
         if (playlistInfo != null) {
             return playlistInfo.getContent().get(position).getSong_id();
-        } else {
+        } else if (chartInfo != null) {
             return chartInfo.getSong_list().get(position).getSong_id();
+        } else {
+            return searchSongInfos.get(position).getSong_id();
         }
     }
 
     public String getCurrentSongAuthor() {
         if (playlistInfo != null) {
             return playlistInfo.getContent().get(position).getAuthor();
-        } else {
+        } else if (chartInfo != null) {
             return chartInfo.getSong_list().get(position).getAuthor();
+        } else {
+            return Html.fromHtml(searchSongInfos.get(position).getAuthor()).toString();
         }
     }
 
     public String getCurrentSongAlbumTitle() {
         if (playlistInfo != null) {
             return playlistInfo.getContent().get(position).getAlbum_title();
-        } else {
+        } else if (chartInfo != null) {
             return chartInfo.getSong_list().get(position).getAlbum_title();
+        } else {
+            return searchSongInfos.get(position).getAlbum_title();
         }
     }
 
