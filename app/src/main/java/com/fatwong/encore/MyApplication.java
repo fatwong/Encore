@@ -24,6 +24,7 @@ public class MyApplication extends Application implements ThemeUtils.switchColor
     public static Context context;
     private static MyApplication instance;
     public static int MAX_NEM = (int) (Runtime.getRuntime().maxMemory() / 4);
+    public static AppConfig appConfig;
 
     public static MyApplication getInstance() {
         return instance;
@@ -40,6 +41,7 @@ public class MyApplication extends Application implements ThemeUtils.switchColor
         OkGo.getInstance().init(this)
                 .setOkHttpClient(builder.build())
                 .setRetryCount(3);
+        appConfig = new AppConfig(context);
     }
 
     public void frescoInit() {

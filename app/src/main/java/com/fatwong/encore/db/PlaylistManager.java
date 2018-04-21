@@ -236,6 +236,25 @@ public class PlaylistManager {
         return playlistRelationDao.deletePlaylistRelation(playlistRelation.getId());
     }
 
+    public void deletePlaylistRelationAsync(final Playlist playlist, final Song song, Consumer<Boolean> consumer) {
+        Observable.create(new ObservableOnSubscribe<Boolean>() {
+            @Override
+            public void subscribe(ObservableEmitter<Boolean> emitter) throws Exception {
+                long index = PlaylistManager.getInstance().deletePlaylistRelation(playlist.getId(), (int) song.getId());
+                emitter.onNext(index > 0);
+            }
+        })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(consumer, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+
+                    }
+                });
+    }
+
+
     public int deletePlaylistRelation(int playlistId, int songId) {
         Playlist playlist = getPlaylistById(playlistId);
         if (playlist != null && playlist.getCount() > 0) {

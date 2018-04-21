@@ -9,8 +9,10 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Spanned;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.fatwong.encore.R;
 import com.fatwong.encore.adapter.PlaylistDetailRecyclerAdapter;
@@ -18,17 +20,21 @@ import com.fatwong.encore.base.BaseActivity;
 import com.fatwong.encore.bean.PlayQueue;
 import com.fatwong.encore.bean.Playlist;
 import com.fatwong.encore.bean.Song;
+import com.fatwong.encore.event.UpdatePlaylistEvent;
 import com.fatwong.encore.interfaces.OnItemClickListener;
 import com.fatwong.encore.interfaces.PlaylistDetailIView;
 import com.fatwong.encore.presenter.PlaylistDetailPresenter;
 import com.fatwong.encore.service.MusicPlayerManager;
 import com.fatwong.encore.ui.fragment.SongPopupFragment;
 import com.fatwong.encore.utils.ImageUtils;
+import com.fatwong.encore.utils.RxBus;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.functions.Consumer;
 
 public class PlaylistDetailActivity extends BaseActivity implements PlaylistDetailIView {
 
@@ -38,11 +44,17 @@ public class PlaylistDetailActivity extends BaseActivity implements PlaylistDeta
     Toolbar toolbar;
     @BindView(R.id.song_list)
     RecyclerView songList;
+    @BindView(R.id.avatar_layout)
+    LinearLayout avatarLayout;
+    @BindView(R.id.playlist_collect_view)
+    ImageView playlistCollectView;
+
     private Playlist currentPlaylist;
     private PlayQueue playQueue;
     private int currentSongPosition = -1;
     private PlaylistDetailPresenter playlistDetailPresenter;
     private PlaylistDetailRecyclerAdapter playlistDetailAdapter;
+    private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     public static void open(Context context, Playlist playlist) {
         context.startActivity(getIntent(context, playlist));
@@ -60,6 +72,7 @@ public class PlaylistDetailActivity extends BaseActivity implements PlaylistDeta
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_music_detail);
         ButterKnife.bind(this);
+        setToolBar();
         playQueue = new PlayQueue();
         playlistDetailAdapter = new PlaylistDetailRecyclerAdapter(this);
         songList.setAdapter(playlistDetailAdapter);
@@ -84,10 +97,26 @@ public class PlaylistDetailActivity extends BaseActivity implements PlaylistDeta
 
             @Override
             public void onItemSettingClick(View view, Song item, int position) {
-                SongPopupFragment songPopupFragment = SongPopupFragment.newInstance(item, PlaylistDetailActivity.this);
+                SongPopupFragment songPopupFragment = SongPopupFragment.newInstance(item, PlaylistDetailActivity.this, currentPlaylist, playlistDetailAdapter);
                 songPopupFragment.show(getSupportFragmentManager(), "");
             }
         });
+    }
+
+    private void setToolBar() {
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.actionbar_back);
+        getSupportActionBar().setTitle("");
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

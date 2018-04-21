@@ -9,7 +9,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -26,7 +25,6 @@ import com.fatwong.encore.presenter.MusicDetailPresenter;
 import com.fatwong.encore.service.MusicPlayerManager;
 import com.fatwong.encore.ui.activity.PlayerActivity;
 import com.fatwong.encore.ui.fragment.DownloadPopupFragment;
-import com.fatwong.encore.ui.fragment.SongPopupFragment;
 import com.fatwong.encore.utils.ImageUtils;
 import com.fatwong.encore.utils.OkGoUtils;
 import com.lzy.okgo.OkGo;
@@ -112,7 +110,7 @@ public class OnlinePlaylistDetailActivity extends AppCompatActivity implements O
                                 , songInfo.getBitrate().getFile_duration()
                                 , 1213142, "100", position, songinfoBean.getAlbum_title()
                                 , songinfoBean.getPic_premium()
-                                , 0
+                                , 1
                                 , songInfo.getBitrate().getFile_link(), false);
                         songList.add(song);
                         playQueue.addQueue(songList, true);

@@ -70,7 +70,7 @@
         <activity android:name=".ui.activity.discover.OnlinePlaylistDetailActivity" />
         <activity android:name=".ui.activity.DownloadActivity" />
         <activity android:name=".ui.activity.discover.ChartDetailActivity" />
-        <activity android:name=".ui.activity.NetSearchResultActivity"></activity>
+        <activity android:name=".ui.activity.NetSearchResultActivity" />
     </application>
 
 </manifest>

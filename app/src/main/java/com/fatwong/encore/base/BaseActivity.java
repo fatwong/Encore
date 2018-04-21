@@ -1,6 +1,9 @@
 package com.fatwong.encore.base;
 
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -50,6 +53,23 @@ public class BaseActivity extends AppCompatActivity  {
 
     public void unbindService() {
 
+    }
+
+    public void changeActionbarSkinMode(ActionBar mActionbar, boolean isNight){
+        int actionbarColor;
+        if(isNight) {
+            actionbarColor= R.color.actionbar_night;
+        }else{
+            actionbarColor=R.color.actionbar_day;
+        }
+        setBackgroundAlpha(mActionbar, getResources().getColor(actionbarColor));
+    }
+
+    public void setBackgroundAlpha(ActionBar view, int baseColor) {
+        int rgb = baseColor;
+        Drawable drawable = new ColorDrawable(rgb);
+        if(view!=null)
+            view.setBackgroundDrawable(drawable);
     }
 
     public boolean startPlayingActivity() {

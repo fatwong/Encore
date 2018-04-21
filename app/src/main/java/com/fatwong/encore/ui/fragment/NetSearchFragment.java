@@ -41,6 +41,7 @@ public class NetSearchFragment extends Fragment {
         searchView.setIconifiedByDefault(false);
         searchView.setIconified(false);
         searchView.setQueryHint(getResources().getString(R.string.search_net_music));
+        searchView.setSubmitButtonEnabled(true);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {

@@ -126,8 +126,6 @@ public class DownloadPopupFragment extends DialogFragment {
             public void onItemClick(View view, int pos) {
                 switch (pos) {
                     case 0:
-                        break;
-                    case 1:
                         String songId = getCurrentSongId();
                         OkGoUtils.getInstance().getSongInfo(songId, new ICallback() {
                             @Override
@@ -199,45 +197,10 @@ public class DownloadPopupFragment extends DialogFragment {
         }
     }
 
-
-
-//    private void showPlaylistDialog(final Song song) {
-//        PlaylistRecyclerAdapter playlistRecyclerAdapter = new PlaylistRecyclerAdapter(mContext);
-//        final MaterialDialog dialog = new MaterialDialog.Builder(mContext)
-//                .title(R.string.collection_dialog_selection_title)
-//                .adapter(playlistRecyclerAdapter, new LinearLayoutManager(mContext))
-//                .build();
-//        playlistRecyclerAdapter.setOnPlaylistClickListener(new OnItemClickListener<Playlist>() {
-//            @Override
-//            public void onItemClick(Playlist item, int position) {
-//                if (item == null) {
-//                    dialog.dismiss();
-//                    return;
-//                }
-//                PlaylistManager.getInstance().insertPlaylistRelationAsync(item, song, new Consumer<Boolean>() {
-//                    @Override
-//                    public void accept(Boolean aBoolean) throws Exception {
-//                        dialog.dismiss();
-//                        Toast.makeText(mContext, aBoolean ? R.string.collect_song_success : R.string.collect_song_fail, Toast.LENGTH_SHORT).show();
-//                        RxBus.getInstance().post(new UpdatePlaylistEvent(aBoolean));
-//                    }
-//                });
-//            }
-//
-//            @Override
-//            public void onItemSettingClick(View view, Playlist item, int position) {
-//
-//            }
-//        });
-//        dialog.show();
-//    }
-
     private void setPopupList() {
-        setPopupItem("收藏到歌单", R.drawable.ic_red_addcollection);
         setPopupItem("下载",R.drawable.ic_red_download);
         setPopupItem("歌手: " + getCurrentSongAuthor(), R.drawable.ic_red_singer);
         setPopupItem("专辑: " + getCurrentSongAlbumTitle(), R.drawable.ic_red_album);
-        setPopupItem("分享", R.drawable.ic_red_share);
     }
 
     private void setItemDecoration() {

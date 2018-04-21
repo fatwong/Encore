@@ -27,6 +27,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(SongDao.createIndex());
         //收藏夹表
         sqLiteDatabase.execSQL(PlaylistDao.createTable());
+        sqLiteDatabase.execSQL(PlaylistDao.initFavPlaylist());
         //收藏夹关联表
         sqLiteDatabase.execSQL(PlaylistRelationDao.createTable());
     }

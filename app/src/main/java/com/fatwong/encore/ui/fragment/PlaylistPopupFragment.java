@@ -26,6 +26,7 @@ import com.fatwong.encore.adapter.PopupRecyclerAdapter;
 import com.fatwong.encore.bean.OverFlowItem;
 import com.fatwong.encore.bean.Playlist;
 import com.fatwong.encore.db.PlaylistManager;
+import com.fatwong.encore.ui.activity.CreatePlaylistActivity;
 import com.fatwong.encore.ui.activity.PlaylistDetailActivity;
 import com.fatwong.encore.utils.HandlerUtils;
 
@@ -112,7 +113,7 @@ public class PlaylistPopupFragment extends DialogFragment {
                     case TYPE_SHARE:
                         break;
                     case TYPE_EDITOR:
-                        PlaylistDetailActivity.open(getActivity(), currentPlaylist);
+                        CreatePlaylistActivity.open(getActivity(), currentPlaylist.getId());
                         break;
                     case TYPE_DELETE:
                         PlaylistManager.getInstance().deletePlaylist(currentPlaylist);
@@ -147,7 +148,6 @@ public class PlaylistPopupFragment extends DialogFragment {
 
     private void setPopupList() {
         setPopupItem("下载", R.drawable.ic_red_download);
-        setPopupItem("分享", R.drawable.ic_red_share);
         setPopupItem("编辑歌单信息", R.drawable.ic_red_editor);
         setPopupItem("删除", R.drawable.ic_red_delete);
     }

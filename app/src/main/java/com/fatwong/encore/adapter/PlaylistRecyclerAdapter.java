@@ -42,7 +42,6 @@ public class PlaylistRecyclerAdapter extends RecyclerView.Adapter<PlaylistRecycl
                 playlists.remove(playlist);
             }
         }
-//        playlists.add(createDefaultPlaylist());
         notifyDataSetChanged();
     }
 
@@ -51,12 +50,6 @@ public class PlaylistRecyclerAdapter extends RecyclerView.Adapter<PlaylistRecycl
             playlists.remove(playlist);
         }
         notifyDataSetChanged();
-    }
-
-    private Playlist createDefaultPlaylist() {
-        Playlist playlist = new Playlist();
-        playlist.setId(-1);
-        return playlist;
     }
 
     @Override
@@ -68,15 +61,18 @@ public class PlaylistRecyclerAdapter extends RecyclerView.Adapter<PlaylistRecycl
     @Override
     public void onBindViewHolder(final PlaylistViewHolder holder, int position) {
         final Playlist playlist = playlists.get(position);
+        if (position == 0) {
+            holder.playlistCover.setImageResource(R.drawable.desk_btn_loved);
+        } else {
+            Glide.with(context)
+                    .load(playlist.getCoverUrl())
+                    .apply(new RequestOptions().placeholder(R.drawable.a8y))
+                    .into(holder.playlistCover);
             holder.playlistSetting.setVisibility(View.VISIBLE);
-            holder.playlistSongCount.setVisibility(View.VISIBLE);
+        }
             holder.playlistTitle.setText(playlist.getTitle());
             String count = String.format(context.getString(R.string.song), playlist.getCount());
             holder.playlistSongCount.setText(count);
-            Glide.with(context)
-                    .load(playlist.getCoverUrl())
-                    .apply(new RequestOptions().placeholder(R.drawable.cover))
-                    .into(holder.playlistCover);
             holder.playlistItem.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

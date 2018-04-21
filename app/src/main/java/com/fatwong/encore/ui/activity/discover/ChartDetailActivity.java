@@ -101,7 +101,7 @@ public class ChartDetailActivity extends AppCompatActivity implements OnSongChan
                                 , songInfo.getBitrate().getFile_duration()
                                 , 1213142, "100", position, songinfoBean.getAlbum_title()
                                 , songinfoBean.getPic_premium()
-                                , 0
+                                , 1
                                 , songInfo.getBitrate().getFile_link(), false);
                         songList.add(song);
                         playQueue.addQueue(songList, true);

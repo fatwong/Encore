@@ -33,6 +33,13 @@ public class PlaylistDao extends BaseDao {
         return sb.toString();
     }
 
+    public static String initFavPlaylist() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("INSERT INTO PLAYLIST(title,cover_url,description,count)VALUES('我喜爱的音乐','NULL','NULL','NULL'));");
+        return sb.toString();
+    }
+
+
     /**
      * 获取表上的所有歌单
      */

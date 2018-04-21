@@ -102,7 +102,7 @@ public class LocalFragment extends Fragment {
         }
     }
 
-    @OnClick({R.id.local_music_layout, R.id.recently_played_layout, R.id.downloads_layout, R.id.artist_layout, R.id.add_playlist})
+    @OnClick({R.id.local_music_layout, R.id.recently_played_layout, R.id.downloads_layout, R.id.add_playlist})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.local_music_layout:
@@ -113,8 +113,6 @@ public class LocalFragment extends Fragment {
                 break;
             case R.id.downloads_layout:
                 DownloadActivity.open(getActivity());
-                break;
-            case R.id.artist_layout:
                 break;
             case R.id.add_playlist:
                 CreatePlaylistActivity.open(getActivity());

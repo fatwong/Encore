@@ -13,13 +13,18 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.view.Gravity;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.bilibili.magicasakura.widgets.TintToolbar;
+import com.fatwong.encore.MyApplication;
 import com.fatwong.encore.R;
+import com.fatwong.encore.adapter.MainNavAdapter;
 import com.fatwong.encore.base.BaseActivity;
 import com.fatwong.encore.bean.Song;
 import com.fatwong.encore.service.MusicPlayerManager;
@@ -51,19 +56,30 @@ public class MainActivity extends BaseActivity {
     MainViewPager mainViewPager;
     @BindView(R.id.drawer_main)
     DrawerLayout drawerMain;
-    @BindView(R.id.nav_view)
-    NavigationView navView;
     @BindView(R.id.bottom_navigation)
     BottomNavigationView bottomNavigation;
+    @BindView(R.id.main_nav_menu)
+    ListView mainNavMenu;
 
     private ActionBar mActionBar;
     private ArrayList<ImageView> tabs = new ArrayList<>();
     private MenuItem menuItem;
     private long time;
+    private boolean isNight;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //夜间模式
+        if (MyApplication.appConfig.getNightModeSwitch()) {
+            this.setTheme(R.style.Theme_setting_night);
+            isNight = true;
+        } else {
+            this.setTheme(R.style.Theme_setting_day);
+            isNight = false;
+        }
+
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         setToolBar();
@@ -86,7 +102,7 @@ public class MainActivity extends BaseActivity {
             }
         });
         setCustomViewPager();
-        setMainMenu();
+        setUpDrawer();
     }
 
     private void setToolBar() {
@@ -105,7 +121,6 @@ public class MainActivity extends BaseActivity {
         MyPagerAdapter myPagerAdapter = new MyPagerAdapter(getSupportFragmentManager());
         LocalFragment localFragment = new LocalFragment();
         DiscoverFragment discoverFragment = new DiscoverFragment();
-        DynamicFragment dynamicFragment = new DynamicFragment();
         NetSearchFragment netSearchFragment = new NetSearchFragment();
 
         myPagerAdapter.addFragment(discoverFragment);
@@ -140,15 +155,42 @@ public class MainActivity extends BaseActivity {
         });
     }
 
-
-    private void setMainMenu() {
-        navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+    /***
+     * 初始化侧滑菜单
+     */
+    private void setUpDrawer() {
+        LayoutInflater inflater = LayoutInflater.from(this);
+        mainNavMenu.addHeaderView(inflater.inflate(R.layout.nav_header_main, mainNavMenu, false));
+        mainNavMenu.setAdapter(new MainNavAdapter(this));
+        mainNavMenu.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                return true;
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                switch (position) {
+                    case 1:
+                        //当前的模式
+                        boolean isNightMode = MyApplication.appConfig.getNightModeSwitch();
+                        MyApplication.appConfig.setNightModeSwitch(!isNightMode);
+                        changeActionbarSkinMode(getSupportActionBar(), !isNightMode);
+                        drawerMain.closeDrawers();
+                        break;
+                    case 2:
+//                        //定时关闭音乐
+//                        TimingFragment timingFragment = new TimingFragment();
+//                        timingFragment.show(getSupportFragmentManager(), "timing");
+//                        drawerMain.closeDrawers();
+//                        break;
+                    case 3:
+                        //退出
+                        if (MusicPlayerManager.get().isPlaying()) {
+                            MusicPlayerManager.get().pause();
+                        }
+                        unbindService();
+                        finish();
+                        break;
+
+                }
             }
         });
-
     }
 
     private void changeTabs(int position) {

@@ -22,6 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
+        android:visibility="invisible"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:padding="4dp"
         android:src="@drawable/list_icn_more" />

@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.fatwong.encore.R;
+import com.fatwong.encore.adapter.PlaylistDetailRecyclerAdapter;
 import com.fatwong.encore.adapter.PlaylistRecyclerAdapter;
 import com.fatwong.encore.adapter.PopupRecyclerAdapter;
 import com.fatwong.encore.bean.Album;
@@ -30,24 +31,16 @@ import com.fatwong.encore.bean.Artist;
 import com.fatwong.encore.bean.OverFlowItem;
 import com.fatwong.encore.bean.Playlist;
 import com.fatwong.encore.bean.Song;
-import com.fatwong.encore.bean.SongInfo;
 import com.fatwong.encore.db.PlaylistManager;
 import com.fatwong.encore.event.UpdatePlaylistEvent;
-import com.fatwong.encore.interfaces.ICallback;
 import com.fatwong.encore.interfaces.OnItemClickListener;
-import com.fatwong.encore.net.LogDownloadListener;
 import com.fatwong.encore.ui.activity.LocalAlbumDetailActivity;
 import com.fatwong.encore.ui.activity.LocalArtistDetailActivity;
 import com.fatwong.encore.ui.activity.LocalMusicActivity;
 import com.fatwong.encore.utils.HandlerUtils;
 import com.fatwong.encore.utils.LocalMusicLibrary;
-import com.fatwong.encore.utils.OkGoUtils;
 import com.fatwong.encore.utils.RxBus;
-import com.lzy.okgo.OkGo;
-import com.lzy.okgo.request.GetRequest;
-import com.lzy.okserver.OkDownload;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -74,6 +67,8 @@ public class SongPopupFragment extends DialogFragment {
     private List<OverFlowItem> popupItemList = new ArrayList<>();  //声明一个list，动态存储要显示的信息
     private PopupRecyclerAdapter popupRecyclerAdapter;
     private Song currentSong;
+    private Playlist currentPlaylist;
+    private PlaylistDetailRecyclerAdapter detailRecyclerAdapter;
 
 
     public SongPopupFragment() {
@@ -84,6 +79,15 @@ public class SongPopupFragment extends DialogFragment {
         SongPopupFragment fragment = new SongPopupFragment();
         fragment.currentSong = song;
         fragment.mContext = context;
+        return fragment;
+    }
+
+    public static SongPopupFragment newInstance(Song song, Context context, Playlist playlist, PlaylistDetailRecyclerAdapter adapter) {
+        SongPopupFragment fragment = new SongPopupFragment();
+        fragment.currentSong = song;
+        fragment.mContext = context;
+        fragment.currentPlaylist = playlist;
+        fragment.detailRecyclerAdapter = adapter;
         return fragment;
     }
 
@@ -135,6 +139,12 @@ public class SongPopupFragment extends DialogFragment {
                         break;
                     case 3:
                         startActivity(new Intent(getActivity(), LocalMusicActivity.class));
+                        break;
+                    case 4:
+                        if (currentPlaylist != null) {
+                            PlaylistManager.getInstance().deletePlaylistRelation(currentPlaylist.getId(), (int) currentSong.getId());
+                            detailRecyclerAdapter.removeSong(currentSong);
+                        }
                         break;
                 }
                 dismiss();
@@ -191,19 +201,19 @@ public class SongPopupFragment extends DialogFragment {
     }
 
     private void setPopupList() {
+        boolean status = currentSong.isStatus();
         setPopupItem("收藏到歌单", R.drawable.ic_red_addcollection);
         setPopupItem("歌手: " + currentSong.getArtistName(), R.drawable.ic_red_singer);
         setPopupItem("专辑: " + currentSong.getAlbumName(), R.drawable.ic_red_album);
-        boolean status = currentSong.isStatus();
         if(status){
             setPopupItem("来源: 本地音乐", R.drawable.ic_red_resource);
         }else
             setPopupItem("来源: 网络歌曲", R.drawable.ic_red_resource);
+        setPopupItem("删除", R.drawable.ic_red_delete);
         if (currentSong.getQuality() != null) {
             setPopupItem("音质: " + currentSong.getQuality(), R.drawable.ic_red_quality);
         }
         setPopupItem("下载",R.drawable.ic_red_download);
-        setPopupItem("分享", R.drawable.ic_red_share);
     }
 
     private void setItemDecoration() {

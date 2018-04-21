@@ -21,7 +21,8 @@ public interface APIService {
     String PLAYLIST_URL = "http://tingapi.ting.baidu.com/v1/restserver/ting?method=baidu.ting.diy.gedan&page_size=60&page_no=1";
     String PLAYLIST_INFO_URL = "http://tingapi.ting.baidu.com/v1/restserver/ting?method=baidu.ting.diy.gedanInfo&listid=";
     String SONG_URL = "http://tingapi.ting.baidu.com/v1/restserver/ting?method=baidu.ting.song.play&songid=";
-    String SEARCH_URL = "http://tingapi.ting.baidu.com/v1/restserver/ting?from=qianqian&version=2.1.0&method=baidu.ting.search.common&format=json&query=";
+    String SEARCH_URL = "http://tingapi.ting.baidu.com/v1/restserver/ting?method=baidu.ting.search.common&query=";
+    String ARTIST_INFO_URL = "http://tingapi.ting.baidu.com/v1/restserver/ting?method=baidu.ting.artist.getSongList&artistid=";
 
     @Headers("Cache-Control: public")
     @GET(BASE_PARAMETERS_ALBUM)

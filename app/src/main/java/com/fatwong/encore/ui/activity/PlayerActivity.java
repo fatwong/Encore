@@ -12,6 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.Spanned;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
@@ -22,15 +23,18 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.fatwong.encore.R;
 import com.fatwong.encore.bean.Song;
+import com.fatwong.encore.db.PlaylistManager;
+import com.fatwong.encore.event.UpdatePlaylistEvent;
 import com.fatwong.encore.interfaces.OnSongChangeListener;
 import com.fatwong.encore.service.MusicPlayerManager;
-import com.fatwong.encore.ui.AlbumViewPager;
 import com.fatwong.encore.ui.fragment.PlayQueueFragment;
 import com.fatwong.encore.ui.fragment.SongPopupFragment;
 import com.fatwong.encore.utils.ImageUtils;
+import com.fatwong.encore.utils.RxBus;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -296,7 +300,11 @@ public class PlayerActivity extends AppCompatActivity implements OnSongChangeLis
             case R.id.playing_more:
                 SongPopupFragment songPopupFragment = SongPopupFragment.newInstance(song, this);
                 songPopupFragment.show(getSupportFragmentManager(), "");
+                break;
         }
     }
 
+    @OnClick(R.id.playing_fav)
+    public void onViewClicked() {
+    }
 }

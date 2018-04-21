@@ -24,8 +24,6 @@ public class OnlinePlaylistDetailRecyclerAdapter extends RecyclerView.Adapter<On
 
     private Context mContext;
     private OnlinePlaylistInfo info;
-    private long playingId;
-
 
     public OnlinePlaylistDetailRecyclerAdapter(Context context) {
         this.mContext = context;
@@ -79,14 +77,6 @@ public class OnlinePlaylistDetailRecyclerAdapter extends RecyclerView.Adapter<On
     @Override
     public int getItemCount() {
         return info != null ? info.getContent().size() : 0;
-    }
-
-    public long getPlayingId() {
-        return playingId;
-    }
-
-    public void setPlayingId(long playingId) {
-        this.playingId = playingId;
     }
 
     public interface OnSongClickListener {

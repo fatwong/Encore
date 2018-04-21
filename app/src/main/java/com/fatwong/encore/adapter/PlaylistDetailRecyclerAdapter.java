@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.fatwong.encore.R;
 import com.fatwong.encore.bean.Song;
+import com.fatwong.encore.db.PlaylistManager;
 import com.fatwong.encore.interfaces.OnItemClickListener;
 
 import java.util.ArrayList;
@@ -32,6 +33,11 @@ public class PlaylistDetailRecyclerAdapter extends RecyclerView.Adapter<Playlist
 
     public void setSongs(List<Song> songs) {
         this.songs = songs;
+        notifyDataSetChanged();
+    }
+
+    public void removeSong(Song song) {
+        songs.remove(song);
         notifyDataSetChanged();
     }
 
