@@ -118,7 +118,7 @@ public class RecentlyPlayedActivity extends AppCompatActivity implements OnSongC
         actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeAsUpIndicator(R.drawable.actionbar_back);
-        actionBar.setTitle("Recently Played");
+        actionBar.setTitle("最近播放的歌曲");
     }
 
     @Override

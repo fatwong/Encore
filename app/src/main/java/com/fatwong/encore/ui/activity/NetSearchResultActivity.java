@@ -97,7 +97,7 @@ public class NetSearchResultActivity extends AppCompatActivity {
         actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeAsUpIndicator(R.drawable.actionbar_back);
-        actionBar.setTitle("Search Results");
+        actionBar.setTitle("搜索结果");
     }
 
     @Override

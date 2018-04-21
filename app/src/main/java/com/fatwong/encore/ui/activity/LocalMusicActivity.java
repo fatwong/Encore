@@ -44,7 +44,7 @@ public class LocalMusicActivity extends BaseActivity {
         actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeAsUpIndicator(R.drawable.actionbar_back);
-        actionBar.setTitle("Local Music");
+        actionBar.setTitle("本地音乐");
     }
 
     @Override

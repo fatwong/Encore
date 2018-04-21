@@ -15,7 +15,7 @@ import com.fatwong.encore.ui.fragment.discover.OnlinePlaylistFragment;
 
 public class DiscoverTabAdapter extends FragmentPagerAdapter {
 
-    private String[] titles = new String[] {"歌单","MV","Hot Chart"};
+    private String[] titles = new String[] {"歌单","MV","排行榜"};
     private OnlinePlaylistFragment onlinePlaylistFragment;
     private MVFragment mvFragment;
     private ChartFragment chartFragment;

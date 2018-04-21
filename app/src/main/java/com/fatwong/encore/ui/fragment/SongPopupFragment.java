@@ -209,11 +209,12 @@ public class SongPopupFragment extends DialogFragment {
             setPopupItem("来源: 本地音乐", R.drawable.ic_red_resource);
         }else
             setPopupItem("来源: 网络歌曲", R.drawable.ic_red_resource);
-        setPopupItem("删除", R.drawable.ic_red_delete);
+        if (currentPlaylist != null) {
+            setPopupItem("删除", R.drawable.ic_red_delete);
+        }
         if (currentSong.getQuality() != null) {
             setPopupItem("音质: " + currentSong.getQuality(), R.drawable.ic_red_quality);
         }
-        setPopupItem("下载",R.drawable.ic_red_download);
     }
 
     private void setItemDecoration() {

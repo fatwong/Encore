@@ -90,6 +90,8 @@
 
     <string name="collect_song_success">歌曲收藏成功</string>
     <string name="collect_song_fail">歌曲收藏失败</string>
+    <string name="delete_song_success">歌曲删除成功</string>
+    <string name="delete_song_fail">歌曲删除失败</string>
 
     <!--################## 通用 ####################-->
     <string name="fav">收藏</string>
